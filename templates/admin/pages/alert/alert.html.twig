@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AlertController!{% endblock %}
+
+{% block body %}
+{% include 'admin/components/dashboardHeader.html.twig' %}
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-900">Alerts & Notifications</h2>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <p class="text-gray-600 mb-4">This section provides a centralized view of all important alerts, including low stock warnings, overdue return reminders, and maintenance notifications.</p>
+            <!-- Alerts List -->
+            <ul class="space-y-4">
+                <!-- Low Stock Alert -->
+                <li class="bg-red-50 p-4 rounded-lg flex items-start space-x-4">
+                    <svg class="h-6 w-6 text-red-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8.257 3.341a1 1 0 011.486 0l5.5 8a1 1 0 01-.743 1.659H3.5a1 1 0 01-.743-1.659l5.5-8z" clip-rule="evenodd"></path></svg>
+                    <div class="flex-grow">
+                        <p class="font-bold text-red-800">Low Stock Alert</p>
+                        <p class="font-medium text-red-700 mt-1">Ammo, 9mm is running low. Please re-order immediately.</p>
+                        <p class="text-xs text-red-500 mt-2">Issued: 1 hour ago</p>
+                    </div>
+                </li>
+                <!-- Overdue Return Alert -->
+                <li class="bg-yellow-50 p-4 rounded-lg flex items-start space-x-4">
+                    <svg class="h-6 w-6 text-yellow-500 flex-shrink-0 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a8 8 0 100 16 8 8 0 000-16zM10 0a10 10 0 110 20A10 10 0 0110 0zM9 12a1 1 0 102 0V7a1 1 0 10-2 0v5zm1-9a1 1 0 100-2 1 1 0 000 2z"/></svg>
+                    <div class="flex-grow">
+                        <p class="font-bold text-yellow-800">Overdue Return Alert</p>
+                        <p class="font-medium text-yellow-700 mt-1">Handgun, Sig Sauer P320 issued to officer Joe Smith is overdue.</p>
+                        <p class="text-xs text-yellow-500 mt-2">Issued: 2 days ago</p>
+                    </div>
+                </li>
+                 <!-- Maintenance Alert -->
+                <li class="bg-gray-50 p-4 rounded-lg flex items-start space-x-4">
+                    <svg class="h-6 w-6 text-gray-500 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.761 2.946-1.761 3.372 0a1.5 1.5 0 01.996 1.411v3.967a1.5 1.5 0 01-.996 1.411c-.426 1.761-2.946 1.761-3.372 0a1.5 1.5 0 01-.996-1.411V5.728a1.5 1.5 0 01.996-1.411z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <div class="flex-grow">
+                        <p class="font-bold text-gray-800">Scheduled Maintenance Alert</p>
+                        <p class="font-medium text-gray-700 mt-1">Machine Gun, M249 is due for its quarterly maintenance check.</p>
+                        <p class="text-xs text-gray-500 mt-2">Due: Next week</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </main>
+{% include 'admin/components/dashboardFooter.html.twig' %}
+{% endblock %}

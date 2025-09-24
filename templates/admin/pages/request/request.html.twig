@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello RequestController!{% endblock %}
+
+{% block body %}
+{% include 'admin/components/dashboardHeader.html.twig' %}
+<main class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-semibold mb-4 text-gray-900">Personnel Requests</h2>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <p class="text-gray-600 mb-4">View and manage all pending and historical equipment requests. You can approve or deny requests and see the current status of each.</p>
+            <!-- Placeholder for a list of requests -->
+            <ul class="divide-y divide-gray-200">
+                <li class="py-4 flex justify-between items-center">
+                    <div>
+                        <p class="text-lg font-semibold text-gray-900">Request for Handgun, Glock 19</p>
+                        <p class="text-sm text-gray-500">Submitted by: John Doe, 2 hours ago</p>
+                    </div>
+                    <span class="px-3 py-1 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                </li>
+                <li class="py-4 flex justify-between items-center">
+                    <div>
+                        <p class="text-lg font-semibold text-gray-900">Request for Body Armor, Level III</p>
+                        <p class="text-sm text-gray-500">Submitted by: Jane Smith, yesterday</p>
+                    </div>
+                    <span class="px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                </li>
+            </ul>
+        </div>
+    </main>
+{% include 'admin/components/dashboardFooter.html.twig' %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}Hello DashboardController!{% endblock %}
+{% block body %}
+{% include 'admin/components/dashboardHeader.html.twig' %}
+<!-- Main Content Area -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Overview Section -->
+        {% include 'admin/sections/overviewMonitoring.html.twig' %}
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- Recent Activity Logs -->
+        {% include 'admin/sections/recentActivity.html.twig' %}
+
+        <hr class="my-8 border-gray-300">
+
+        <!-- Feature Modules Section -->
+        {% include 'admin/sections/keyModules.html.twig' %}
+    </main>
+{% include 'admin/components/dashboardFooter.html.twig' %}
+{% endblock %}
