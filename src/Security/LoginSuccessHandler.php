@@ -24,6 +24,6 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
             return new RedirectResponse($this->router->generate('app_admin'));
         }
 
-        return new RedirectResponse($this->router->generate('user_profile'));
+        return new RedirectResponse($this->router->generate('app_user'));
     }
 }

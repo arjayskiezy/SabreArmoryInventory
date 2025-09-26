@@ -11,7 +11,7 @@ final class AlertController extends AbstractController
     #[Route('/alert', name: 'app_alert')]
     public function index(): Response
     {
-        return $this->render('/admin/pages/alert/alert.html.twig', [
+        return $this->render('/UserPage/Admin/pages/alert/alert.html.twig', [
             'controller_name' => 'AlertController',
         ]);
     }

@@ -1,37 +1,56 @@
-@import "tailwindcss"; 
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @source not "../../public";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 body {
     background-color: rgb(231, 231, 231);
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
+}
+/* ✅ Your custom scrollbar styles */
+.scrollbar-thin::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
 }
 
 /* Custom primary & secondary colors */
-.bg-primary { background-color: #FF7828; }
-.text-primary { color: #FF7828; }
-.border-primary { border-color: #FF7828; }
+.bg-primary {
+    background-color: #ff7828;
+}
+.text-primary {
+    color: #ff7828;
+}
+.border-primary {
+    border-color: #ff7828;
+}
 
-.bg-secondary { background-color: #6C6C6C; }
-.text-secondary { color: #6C6C6C; }
-.border-secondary { border-color: #6C6C6C; }
+.bg-secondary {
+    background-color: #6c6c6c;
+}
+.text-secondary {
+    color: #6c6c6c;
+}
+.border-secondary {
+    border-color: #6c6c6c;
+}
 
 /* Gradient text example */
 .text-gradient {
-    background-image: linear-gradient(to right, #FF7828, #6C6C6C);
+    background-image: linear-gradient(to right, #ff7828, #6c6c6c);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* .py-20 {
-    padding-block: calc(var(--spacing) * 20);
+@theme {
+    --color-sidebar: #0f172a;
+    --color-accent: var(--color-primary);
+    --color-danger: #ef4444;
+    --color-success: #16a34a;
+    --color-card: #ffffff;
+    --color-primary: #ff7828;
+    --color-secondary: #6c6c6c;
 }
-.py-24 {
-    padding-block: calc(var(--spacing) * 24);
-}
-.py-32 {
-    padding-block: calc(var(--spacing) * 32);
-}
-.py-42 {
-    padding-block: calc(var(--spacing) * 42);
-} */

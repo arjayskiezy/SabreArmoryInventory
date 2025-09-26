@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %} {% block title %}Login{% endblock %} {% block
+body %} 
+{% include 'Components/landingPageHeader.html.twig' %} 
+
+<div class="py-42 flex items-center justify-center bg-gray-50 px-4">
+    <div class="max-w-md w-full bg-white shadow-lg rounded-lg p-8">
+        <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">
+            Sign in to your account
+        </h2>
+
+        {% if error %}
+        <div style="color: red">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+        </div>
+        {% endif %}
+
+        <form action="{{ path('app_login') }}" method="post" class="space-y-6">
+            <div>
+                <label
+                    for="email"
+                    class="block text-sm font-medium text-gray-700"
+                    >Email address</label
+                >
+                <input
+                    type="email"
+                    name="_username"
+                    id="email"
+                    required
+                    autofocus
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:text-sm"
+                    value="{{ last_username }}"
+                />
+            </div>
+
+            <div>
+                <label
+                    for="password"
+                    class="block text-sm font-medium text-gray-700"
+                    >Password</label
+                >
+                <input
+                    type="password"
+                    name="_password"
+                    id="password"
+                    required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:text-sm"
+                />
+            </div>
+            <input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+            />
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input
+                        id="remember_me"
+                        name="_remember_me"
+                        type="checkbox"
+                        class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                    />
+                    <label
+                        for="remember_me"
+                        class="ml-2 block text-sm text-gray-900"
+                    >
+                        Remember me
+                    </label>
+                </div>
+
+                <div class="text-sm">
+                    <a
+                        href="{{ path('app_forgot_password') }}"
+                        class="font-medium text-primary hover:text-secondary"
+                    >
+                        Forgot your password?
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <button
+                    type="submit"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-medium text-sm transition"
+                >
+                    Sign in
+                </button>
+            </div>
+        </form>
+
+        <p class="mt-6 text-center text-sm text-gray-600">
+            Don't have an account?
+            <a
+                href="{{ path('app_signup') }}"
+                class="font-medium text-primary hover:text-secondary"
+            >
+                Sign up
+            </a>
+        </p>
+    </div>
+</div>
+{% include 'Components/landingPageFooter.html.twig' %} {% endblock %}

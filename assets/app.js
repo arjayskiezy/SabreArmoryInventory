@@ -8,3 +8,9 @@ import './bootstrap.js';
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+import Alpine from 'alpinejs'
+import dashboard from './js/dashboard'
+
+window.Alpine = Alpine
+Alpine.data('dashboard', dashboard)
+Alpine.start()

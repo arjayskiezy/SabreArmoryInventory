@@ -1,0 +1,127 @@
+<header
+    class="flex items-center justify-between px-4 md:px-8 py-4 bg-white shadow"
+>
+    <div class="flex items-center gap-3">
+        <button class="md:hidden p-2" @click="mobileSidebar = true">☰</button>
+
+        <!-- search -->
+        <div class="relative">
+            <input
+                x-model="searchQuery"
+                @input.debounce.300="performSearch"
+                type="search"
+                placeholder="Search by model, serial, category..."
+                class="pl-10 pr-4 py-2 rounded-lg border border-gray-200 w-72 focus:ring-2 focus:ring-accent"
+            />
+            <div class="absolute left-3 top-2.5 text-gray-400">🔎</div>
+        </div>
+
+        <!-- quick stats badges -->
+        <div class="hidden md:flex gap-3 ml-6">
+            <div class="px-3 py-2 bg-white rounded shadow text-sm">
+                <div class="text-xs text-gray-500">Total Weapons</div>
+                <div class="font-semibold text-gray-800">1,234</div>
+            </div>
+            <div class="px-3 py-2 bg-white rounded shadow text-sm">
+                <div class="text-xs text-gray-500">Checked Out</div>
+                <div class="font-semibold text-gray-800">42</div>
+            </div>
+            <div class="px-3 py-2 bg-white rounded shadow text-sm">
+                <div class="text-xs text-gray-500">Pending Requests</div>
+                <div class="font-semibold text-gray-800">7</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- actions -->
+    <div class="flex items-center gap-3">
+        <button
+            class="px-3 py-2 rounded bg-accent text-white"
+            @click="openModal('newRequest')"
+        >
+            New Request
+        </button>
+        <button class="px-3 py-2 rounded border" @click="openModal('issue')">
+            Issue / Return
+        </button>
+
+        <!-- notifications -->
+        <div class="relative">
+            <button
+                @click="toggleNotifications"
+                class="p-2 rounded hover:bg-gray-100"
+            >
+                🔔
+                <span
+                    x-text="unreadNotifications"
+                    class="ml-1 text-xs text-red-600"
+                ></span>
+            </button>
+            <div
+                x-show="showNotifications"
+                x-cloak
+                class="absolute right-0 mt-2 w-96 bg-white rounded shadow overflow-hidden"
+            >
+                <div class="p-3 border-b text-sm font-semibold">
+                    Notifications
+                </div>
+                <div class="max-h-64 overflow-y-auto scrollbar-thin">
+                    <template x-for="note in notifications" :key="note.id">
+                        <div
+                            class="p-3 hover:bg-gray-50 flex justify-between gap-3"
+                        >
+                            <div>
+                                <div
+                                    class="text-sm font-medium"
+                                    x-text="note.titles"
+                                ></div>
+                                <div
+                                    class="text-xs text-gray-500"
+                                    x-text="note.time"
+                                ></div>
+                            </div>
+                            <div class="text-xs" x-text="note.level"></div>
+                        </div>
+                    </template>
+                    <div
+                        x-show="notifications.length === 0"
+                        class="p-3 text-sm text-gray-500"
+                    >
+                        No notifications
+                    </div>
+                </div>
+                <div class="p-2 text-center text-xs text-gray-500">
+                    Auto-updates via WebSocket placeholder
+                </div>
+            </div>
+        </div>
+
+        <!-- user menu -->
+        <div class="relative">
+            <button
+                @click="userMenu = !userMenu"
+                class="flex items-center gap-2"
+            >
+                <div
+                    class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center"
+                >
+                    A
+                </div>
+                <div class="hidden md:block text-sm">Armory Officer</div>
+            </button>
+            <div
+                x-show="userMenu"
+                x-cloak
+                class="absolute right-0 mt-2 w-48 bg-white rounded shadow"
+            >
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Profile</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50"
+                    >Settings</a
+                >
+                <a href="#" class="block px-4 py-2 hover:bg-gray-50"
+                    >Sign out</a
+                >
+            </div>
+        </div>
+    </div>
+</header>

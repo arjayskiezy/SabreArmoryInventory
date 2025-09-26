@@ -1,0 +1,71 @@
+<section x-show="view === 'transactions'">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Issue / Return</h2>
+                    <div class="text-sm text-gray-500">
+                        Record issuance, returns and authorization logs
+                    </div>
+                </div>
+
+                <div class="bg-white rounded shadow p-4">
+                    <!-- quick issue form -->
+                    <form
+                        @submit.prevent="submitIssue"
+                        class="grid grid-cols-1 md:grid-cols-3 gap-3"
+                    >
+                        <div>
+                            <label class="text-sm text-gray-600"
+                                >Personnel (ID / Name)</label
+                            >
+                            <input
+                                x-model="issueForm.person"
+                                class="mt-1 px-3 py-2 border rounded w-full"
+                                placeholder="Enter personnel id or name"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label class="text-sm text-gray-600"
+                                >Item Serial # / Model</label
+                            >
+                            <input
+                                x-model="issueForm.item"
+                                class="mt-1 px-3 py-2 border rounded w-full"
+                                placeholder="e.g. M4-12345"
+                                required
+                            />
+                        </div>
+                        <div class="flex items-end gap-2">
+                            <div>
+                                <label class="text-sm text-gray-600"
+                                    >Authorization</label
+                                >
+                                <select
+                                    x-model="issueForm.authorizer"
+                                    class="mt-1 px-3 py-2 border rounded w-full"
+                                >
+                                    <option value="">
+                                        Select authorizing officer
+                                    </option>
+                                    <option>Commander A</option>
+                                    <option>Commander B</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button
+                                    type="submit"
+                                    class="px-4 py-2 bg-accent text-white rounded"
+                                >
+                                    Issue Item
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="mt-6 text-sm text-gray-500">
+                        Note: The authorization flow will create a record
+                        requiring confirmation from the authorizing officer. You
+                        can integrate real digital signature APIs or record a
+                        sign-off.
+                    </div>
+                </div>
+            </section>

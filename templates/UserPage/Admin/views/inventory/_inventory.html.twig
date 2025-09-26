@@ -1,0 +1,54 @@
+<section x-show="view === 'inventory'">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Inventory Management</h2>
+                    <div class="text-sm text-gray-500">
+                        Realtime stock, low ammo alerts, maintenance
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white rounded shadow p-4">
+                        <div class="text-xs text-gray-500">Stock Overview</div>
+                        <div class="mt-4 space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <div>M4A1 (rifles)</div>
+                                <div>180</div>
+                            </div>
+                            <div class="flex justify-between">
+                                <div>9mm (ammo)</div>
+                                <div>12</div>
+                            </div>
+                            <div class="flex justify-between">
+                                <div>Pistol-45</div>
+                                <div>54</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded shadow p-4">
+                        <div class="text-xs text-gray-500">
+                            Maintenance Schedule
+                        </div>
+                        <div class="mt-3 space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <div>M4A1 - Serial M4-121 (Due)</div>
+                                <div class="text-red-600">2025-09-28</div>
+                            </div>
+                            <div class="flex justify-between">
+                                <div>Pistol-45 - P45-23 (Ok)</div>
+                                <div class="text-green-600">2026-02-01</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded shadow p-4">
+                        <div class="text-xs text-gray-500">Suppliers</div>
+                        <div class="mt-3 text-sm">
+                            <div class="font-medium">Alpha Supplies</div>
+                            <div class="text-xs text-gray-500">
+                                Contact: +63 912 345 6789
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>

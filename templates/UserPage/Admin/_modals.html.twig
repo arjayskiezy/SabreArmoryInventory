@@ -1,0 +1,21 @@
+<div
+    x-show="modal.open"
+    x-cloak
+    class="fixed inset-0 z-50 flex items-center justify-center"
+>
+    <div class="absolute inset-0 bg-black/40" @click="closeModal()"></div>
+    <div class="bg-white rounded-lg shadow-lg z-50 w-full max-w-3xl p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold" x-text="modal.title">
+                Modal Title
+            </h3>
+            <button @click="closeModal()" class="text-gray-500">✕</button>
+        </div>
+
+        <!-- Issue modal content -->
+        {% include 'UserPage/Admin/modals/_issue.html.twig' %}
+
+        <!-- Authorization modal (digital signature placeholder) -->
+        {% include 'UserPage/Admin/modals/_auth.html.twig' %}
+    </div>
+</div>

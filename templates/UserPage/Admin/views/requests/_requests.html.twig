@@ -1,0 +1,45 @@
+<!-- Requests view -->
+            <section x-show="view === 'requests'">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold">Armory Requests</h2>
+                    <div class="text-sm text-gray-500">
+                        Approve, deny, or log issue
+                    </div>
+                </div>
+
+                <div class="bg-white rounded shadow overflow-hidden">
+                    <ul>
+                        <!-- sample request (replace with Twig loop) -->
+                        <li
+                            class="p-4 border-b flex justify-between items-start"
+                        >
+                            <div>
+                                <div class="font-medium">
+                                    Request #R-00123 — Officer Jane Doe
+                                </div>
+                                <div class="text-xs text-gray-500">
+                                    For: Training / M4A1
+                                </div>
+                                <div class="text-xs text-gray-500">
+                                    Requested: 2025-09-20
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button
+                                    class="px-3 py-1 bg-green-600 text-white rounded"
+                                    @click="openModal('authorize', { reqId: 'R-00123' })"
+                                >
+                                    Authorize
+                                </button>
+                                <button
+                                    class="px-3 py-1 border rounded"
+                                    @click="openModal('deny', { reqId: 'R-00123' })"
+                                >
+                                    Deny
+                                </button>
+                            </div>
+                        </li>
+                        <!-- more requests -->
+                    </ul>
+                </div>
+            </section>
