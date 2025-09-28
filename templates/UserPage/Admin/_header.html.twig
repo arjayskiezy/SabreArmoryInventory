@@ -1,127 +1,99 @@
 <header
-    class="flex items-center justify-between px-4 md:px-8 py-4 bg-white shadow"
+    class="flex items-center justify-between px-4 md:px-8 py-4 bg-white shadow-md"
 >
-    <div class="flex items-center gap-3">
-        <button class="md:hidden p-2" @click="mobileSidebar = true">☰</button>
+    <!-- Left section -->
+    <div class="flex items-center gap-4">
+        <!-- Mobile sidebar toggle -->
+        <button
+            type="button"
+            class="md:hidden p-2 rounded hover:bg-gray-100 transition"
+            @click="mobileSidebar = true"
+            aria-label="Open sidebar"
+        >
+            <!-- Heroicons Menu -->
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-gray-700"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                />
+            </svg>
+        </button>
 
-        <!-- search -->
+        <!-- Search -->
         <div class="relative">
             <input
+                type="search"
                 x-model="searchQuery"
                 @input.debounce.300="performSearch"
-                type="search"
                 placeholder="Search by model, serial, category..."
-                class="pl-10 pr-4 py-2 rounded-lg border border-gray-200 w-72 focus:ring-2 focus:ring-accent"
+                class="pl-10 pr-4 py-2 rounded-lg border border-gray-200 w-64 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
             />
-            <div class="absolute left-3 top-2.5 text-gray-400">🔎</div>
+            <div
+                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
+            >
+                <!-- Heroicons Magnifying Glass -->
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
+                    />
+                </svg>
+            </div>
         </div>
 
-        <!-- quick stats badges -->
+        <!-- Quick stats (desktop only) -->
         <div class="hidden md:flex gap-3 ml-6">
-            <div class="px-3 py-2 bg-white rounded shadow text-sm">
+            <div class="px-3 py-2 bg-gray-100 rounded-2xl shadow text-sm">
                 <div class="text-xs text-gray-500">Total Weapons</div>
                 <div class="font-semibold text-gray-800">1,234</div>
             </div>
-            <div class="px-3 py-2 bg-white rounded shadow text-sm">
+            <div class="px-3 py-2 bg-gray-100 rounded-2xl shadow text-sm">
                 <div class="text-xs text-gray-500">Checked Out</div>
                 <div class="font-semibold text-gray-800">42</div>
             </div>
-            <div class="px-3 py-2 bg-white rounded shadow text-sm">
+            <div class="px-3 py-2 bg-gray-100 rounded-2xl shadow text-sm">
                 <div class="text-xs text-gray-500">Pending Requests</div>
                 <div class="font-semibold text-gray-800">7</div>
             </div>
         </div>
     </div>
 
-    <!-- actions -->
+    <!-- Right section -->
     <div class="flex items-center gap-3">
+        <!-- Action buttons -->
         <button
-            class="px-3 py-2 rounded bg-accent text-white"
+            type="button"
+            class="px-4 py-2 rounded-2xl bg-accent text-white hover:bg-accent-dark transition"
             @click="openModal('newRequest')"
         >
             New Request
         </button>
-        <button class="px-3 py-2 rounded border" @click="openModal('issue')">
+        <button
+            type="button"
+            class="px-4 py-2 rounded-2xl border hover:bg-gray-50 transition"
+            @click="openModal('issue')"
+        >
             Issue / Return
         </button>
-
-        <!-- notifications -->
-        <div class="relative">
-            <button
-                @click="toggleNotifications"
-                class="p-2 rounded hover:bg-gray-100"
-            >
-                🔔
-                <span
-                    x-text="unreadNotifications"
-                    class="ml-1 text-xs text-red-600"
-                ></span>
-            </button>
-            <div
-                x-show="showNotifications"
-                x-cloak
-                class="absolute right-0 mt-2 w-96 bg-white rounded shadow overflow-hidden"
-            >
-                <div class="p-3 border-b text-sm font-semibold">
-                    Notifications
-                </div>
-                <div class="max-h-64 overflow-y-auto scrollbar-thin">
-                    <template x-for="note in notifications" :key="note.id">
-                        <div
-                            class="p-3 hover:bg-gray-50 flex justify-between gap-3"
-                        >
-                            <div>
-                                <div
-                                    class="text-sm font-medium"
-                                    x-text="note.titles"
-                                ></div>
-                                <div
-                                    class="text-xs text-gray-500"
-                                    x-text="note.time"
-                                ></div>
-                            </div>
-                            <div class="text-xs" x-text="note.level"></div>
-                        </div>
-                    </template>
-                    <div
-                        x-show="notifications.length === 0"
-                        class="p-3 text-sm text-gray-500"
-                    >
-                        No notifications
-                    </div>
-                </div>
-                <div class="p-2 text-center text-xs text-gray-500">
-                    Auto-updates via WebSocket placeholder
-                </div>
-            </div>
-        </div>
-
-        <!-- user menu -->
-        <div class="relative">
-            <button
-                @click="userMenu = !userMenu"
-                class="flex items-center gap-2"
-            >
-                <div
-                    class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center"
-                >
-                    A
-                </div>
-                <div class="hidden md:block text-sm">Armory Officer</div>
-            </button>
-            <div
-                x-show="userMenu"
-                x-cloak
-                class="absolute right-0 mt-2 w-48 bg-white rounded shadow"
-            >
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50">Profile</a>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50"
-                    >Settings</a
-                >
-                <a href="#" class="block px-4 py-2 hover:bg-gray-50"
-                    >Sign out</a
-                >
-            </div>
-        </div>
+        <!-- User menu -->
+        {% include 'UserPage/Admin/_user_menu.html.twig' %}
+        <!-- Notifications -->
+        {% include 'UserPage/Admin/_notifications.html.twig' %}
     </div>
 </header>

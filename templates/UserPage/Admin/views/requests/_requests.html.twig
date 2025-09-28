@@ -7,7 +7,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded shadow overflow-hidden">
+                <div class="bg-white rounded-2xl shadow overflow-hidden">
                     <ul>
                         <!-- sample request (replace with Twig loop) -->
                         <li
@@ -26,13 +26,13 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button
-                                    class="px-3 py-1 bg-green-600 text-white rounded"
+                                    class="px-3 py-1 bg-green-600 text-white rounded-2xl"
                                     @click="openModal('authorize', { reqId: 'R-00123' })"
                                 >
                                     Authorize
                                 </button>
                                 <button
-                                    class="px-3 py-1 border rounded"
+                                    class="px-3 py-1 border rounded-2xl"
                                     @click="openModal('deny', { reqId: 'R-00123' })"
                                 >
                                     Deny

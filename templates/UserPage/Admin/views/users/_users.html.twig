@@ -1,39 +1,37 @@
 <section x-show="view === 'users'">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-xl font-semibold">Users & Roles</h2>
-                    <button
-                        class="px-3 py-2 bg-accent text-white rounded"
-                        @click="openModal('newUser')"
-                    >
-                        New User
-                    </button>
-                </div>
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-semibold">Users & Roles</h2>
+        <button
+            class="px-3 py-2 bg-accent text-white rounded"
+            @click="openModal('newUser')"
+        >
+            New User
+        </button>
+    </div>
 
-                <div class="bg-white rounded shadow overflow-hidden">
-                    <table class="min-w-full text-sm">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-4 py-3">Name</th>
-                                <th class="px-4 py-3">Role</th>
-                                <th class="px-4 py-3">Assigned Items</th>
-                                <th class="px-4 py-3">Last Activity</th>
-                                <th class="px-4 py-3">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- replace with twig loop -->
-                            <tr class="border-t">
-                                <td class="px-4 py-3">Officer John</td>
-                                <td class="px-4 py-3">Officer</td>
-                                <td class="px-4 py-3">M4-12345</td>
-                                <td class="px-4 py-3">2 hours ago</td>
-                                <td class="px-4 py-3">
-                                    <button class="px-2 py-1 border rounded">
-                                        Edit
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+    <div class="bg-white rounded-2xl shadow overflow-hidden">
+        <table class="min-w-full text-sm">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-4 py-3">Name</th>
+                    <th class="px-4 py-3">Role</th>
+                    <th class="px-4 py-3">Assigned Items</th>
+                    <th class="px-4 py-3">Last Activity</th>
+                    <th class="px-4 py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- replace with twig loop -->
+                <tr class="border-t">
+                    <td class="px-4 py-3">Officer John</td>
+                    <td class="px-4 py-3">Officer</td>
+                    <td class="px-4 py-3">M4-12345</td>
+                    <td class="px-4 py-3">2 hours ago</td>
+                    <td class="px-4 py-3">
+                        <button class="px-2 py-1 border rounded">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,26 @@
+<div class="relative">
+    <button
+        type="button"
+        @click="userMenu = !userMenu"
+        class="flex items-center gap-2 transition"
+        :aria-expanded="userMenu"
+        aria-label="User menu"
+    >
+        <div
+            class="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center"
+        >
+            M
+        </div>
+        <div class="hidden md:block text-sm">Managtuba Atilla</div>
+    </button>
+    <div
+        x-show="userMenu"
+        x-transition
+        x-cloak
+        class="absolute right-0 mt-2 w-48 bg-white rounded shadow z-50"
+    >
+        <a href="#" class="block px-4 py-2 hover:bg-gray-50">Profile</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-50">Settings</a>
+        <a href="#" class="block px-4 py-2 hover:bg-gray-50">Sign out</a>
+    </div>
+</div>

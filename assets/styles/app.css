@@ -46,7 +46,7 @@ body {
 }
 
 @theme {
-    --color-sidebar: #0f172a;
+    --color-sidebar: #1e293b;
     --color-accent: var(--color-primary);
     --color-danger: #ef4444;
     --color-success: #16a34a;
