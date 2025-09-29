@@ -36,7 +36,7 @@ security:
                 always_remember_me: false
             logout:
                 path: app_logout
-                target: homepage
+                target: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

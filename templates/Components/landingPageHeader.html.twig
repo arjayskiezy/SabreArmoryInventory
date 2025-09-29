@@ -1,22 +1,22 @@
 <header class="bg-white shadow-sm sticky top-0 z-50">
     <div
-        class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center"
+        class="container mx-auto px-4 sm:px-6 lg:px-8 py-2 flex justify-between items-center"
     >
         <a href="/">
             <img
                 src="{{ asset('images/logo.png') }}"
                 alt="Sabre Armory Logo"
-                class="h-12 w-auto mr-3"
+                class="h-18 w-auto"
             />
         </a>
-        <nav class="hidden md:flex space-x-6">
+        <nav class="hidden md:flex space-x-4">
             <a
-                href="#features"
+                href="{{ path('app_landing_page') }}#features"
                 class="text-gray-600 hover:text-primary transition-colors duration-300 font-medium"
                 >Features</a
             >
             <a
-                href="#about"
+                href="{{ path('app_landing_page') }}#about"
                 class="text-gray-600 hover:text-primary transition-colors duration-300 font-medium"
                 >About</a
             >

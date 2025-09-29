@@ -65,12 +65,13 @@ final class AuthController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('auth/signup/signup.html.twig');
+        return $this->render('Auth/signup/signup.html.twig');
     }
 
     #[Route('/forgotPassword', name: 'app_forgot_password')]
     public function forgotPassword(): Response
     {
-        return $this->render('auth/forgotPassword/forgotPassword.html.twig');
+        return $this->render('Auth/forgotPassword/forgotPassword.html.twig');
     }
+        
 }
