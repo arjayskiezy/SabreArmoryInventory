@@ -1,0 +1,25 @@
+services:
+  symfony:
+    image: php:8.2-fpm
+    container_name: symfony_app
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html   # Mount your project
+    environment:
+      DATABASE_URL: "mysql://symfony:secret123@host.docker.internal:3306/webapp"
+    ports:
+      - "8000:8000"         # optional, if you run Symfony server
+    depends_on:
+      - phpmyadmin
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: host.docker.internal
+      PMA_PORT: 3306
+      PMA_USER: symfony
+      PMA_PASSWORD: secret123
+    ports:
+      - "8080:80"
