@@ -1,42 +1,97 @@
-<h1>Unit</h1>
+<h1 class="text-2xl font-bold mb-6">Unit Details</h1>
 
-<table class="table">
-    <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ unit.id }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ unit.name }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ unit.description }}</td>
-        </tr>
-        <tr>
-            <th>Price</th>
-            <td>{{ unit.price }}</td>
-        </tr>
-        <tr>
-            <th>Image_path</th>
-            <td>{{ unit.imagePath }}</td>
-        </tr>
-        <tr>
-            <th>Created_at</th>
-            <td>
-                {{ unit.createdAt ? unit.createdAt|date('Y-m-d H:i:s') : '' }}
-            </td>
-        </tr>
-        <tr>
-            <th>Updated_at</th>
-            <td>
-                {{ unit.updatedAt ? unit.updatedAt|date('Y-m-d H:i:s') : '' }}
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="bg-white shadow rounded-lg overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+        <tbody class="divide-y divide-gray-200">
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    ID
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">{{ unit.id }}</td>
+            </tr>
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Name
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">{{ unit.name }}</td>
+            </tr>
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Type
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ unit.type ? unit.type.name : "No type" }}
+                </td>
+            </tr>
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Description
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ unit.description }}
+                </td>
+            </tr>
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Price
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ unit.price }}
+                </td>
+            </tr>
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Image
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {% if unit.imagePath %}
+                    <img
+                        src="{{ asset('uploads/' ~ unit.imagePath) }}"
+                        alt="{{ unit.name }}"
+                        class="h-32 w-auto rounded"
+                    />
+                    {% else %} No image {% endif %}
+                </td>
+            </tr>
 
-{{ include('unit/_back_link.html.twig') }}
-{{ include('unit/_edit_link.html.twig', { unit: unit }) }}
-{{ include("unit/_delete_form.html.twig") }}
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Created At
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ unit.createdAt ? unit.createdAt|date('Y-m-d H:i:s') : '' }}
+                </td>
+            </tr>
+            <tr>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Updated At
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ unit.updatedAt ? unit.updatedAt|date('Y-m-d H:i:s') : '' }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-6 flex items-center gap-3">
+    {# {{ include("unit/_back_link.html.twig") }} #}
+    {{ include("unit/_edit_link.html.twig", { unit: unit }) }}
+    {{ include("unit/_delete_form.html.twig") }}
+</div>

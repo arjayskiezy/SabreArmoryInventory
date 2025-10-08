@@ -13,9 +13,13 @@
         </div>
 
         <!-- Issue modal content -->
-        {% include 'UserPage/Admin/modals/_issue.html.twig' %}
+        <div x-show="modal.name === 'issue'" x-cloak>
+            {% include 'UserPage/Admin/modals/_issue.html.twig' %}
+        </div>
 
         <!-- Authorization modal (digital signature placeholder) -->
-        {% include 'UserPage/Admin/modals/_auth.html.twig' %}
+        <div x-show="modal.name === 'auth'" x-cloak>
+            {% include 'UserPage/Admin/modals/_auth.html.twig' %}
+        </div>
     </div>
 </div>

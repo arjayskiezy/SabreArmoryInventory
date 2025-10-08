@@ -1,0 +1,21 @@
+{% macro editButton(url) %}
+<button
+    @click="loadModal('{{ url }}')"
+    class="btn btn-success btn-sm"
+    title="Edit"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none"
+         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M16.862 4.487l1.688-1.688a1.875 1.875 0 112.652 
+              2.652l-9.193 9.193a4.5 4.5 0 
+              01-1.897 1.13l-3.372.844.844-3.372a4.5 
+              4.5 0 011.13-1.897l9.193-9.193z"/>
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M18 13.5V18.75A2.25 2.25 0 
+              0115.75 21h-10.5A2.25 2.25 0 
+              013 18.75v-10.5A2.25 2.25 0 
+              015.25 6H10.5"/>
+    </svg>
+</button>
+{% endmacro %}
