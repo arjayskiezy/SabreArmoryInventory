@@ -53,7 +53,7 @@ final class UnitController extends AbstractController
             return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('unit/new.html.twig', [
+        return $this->render('UserPage/Admin/forms/unit/new.html.twig', [
             'unit' => $unit,
             'form' => $form->createView(),
         ]);
@@ -63,7 +63,7 @@ final class UnitController extends AbstractController
     #[Route('/{id}', name: 'app_unit_show', methods: ['GET'])]
     public function show(Unit $unit): Response
     {
-        return $this->render('unit/show.html.twig', [
+        return $this->render('UserPage/Admin/forms/unit/show.html.twig', [
             'unit' => $unit,
         ]);
     }
@@ -101,7 +101,7 @@ final class UnitController extends AbstractController
             return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('unit/edit.html.twig', [
+        return $this->render('UserPage/Admin/forms/unit/edit.html.twig', [
             'unit' => $unit,
             'form' => $form->createView(),
         ]);
