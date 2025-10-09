@@ -17,7 +17,7 @@ final class UnitController extends AbstractController
     #[Route(name: 'app_unit_index', methods: ['GET'])]
     public function index(UnitRepository $unitRepository, Request $request): Response
     {
-        return $this->render('UserPage/Admin/index.html.twig', [
+        return $this->render('UserPage/Admin/views/inventory/_inventory.html.twig', [
             'units' => $unitRepository->findAll(),
             'focus' => $request->query->get('focus', null),
         ]);

@@ -1,75 +1,72 @@
-<!-- Catalog view -->
-<section x-show="view === 'catalog'">
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">Firearm & Equipment Catalog</h2>
-        <div class="flex items-center gap-2">
-            <select
-                x-model="filter.category"
-                class="px-3 py-2 border rounded-2xl"
-            >
-                <option value="">All Categories</option>
-                <option value="rifle">Rifles</option>
-                <option value="pistol">Pistols</option>
-                <option value="sabre">Sabres</option>
-                <option value="gear">Protective Gear</option>
-            </select>
-            <input
-                x-model="filter.q"
-                @input.debounce.300="searchCatalog"
-                placeholder="Model / Serial #"
-                class="px-3 py-2 border rounded-2xl"
-            />
-            <button
-                class="px-3 py-2 bg-accent text-white rounded-2xl"
-                @click="openModal('newItem')"
-            >
-                Add Item
-            </button>
-        </div>
+{% extends 'UserPage/Admin/index.html.twig' %} {% block title %}Firearm &
+Equipment Catalog{% endblock %} {% block admin_content %}
+<div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-semibold">Firearm & Equipment Catalog</h2>
+    <div class="flex items-center gap-2">
+        <select x-model="filter.category" class="px-3 py-2 border rounded-2xl">
+            <option value="">All Categories</option>
+            <option value="rifle">Rifles</option>
+            <option value="pistol">Pistols</option>
+            <option value="sabre">Sabres</option>
+            <option value="gear">Protective Gear</option>
+        </select>
+        <input
+            x-model="filter.q"
+            @input.debounce.300="searchCatalog"
+            placeholder="Model / Serial #"
+            class="px-3 py-2 border rounded-2xl"
+        />
+        <button
+            class="px-3 py-2 bg-accent text-white rounded-2xl"
+            @click="openModal('newItem')"
+        >
+            Add Item
+        </button>
     </div>
+</div>
 
-    <!-- Catalog table -->
-    <div class="bg-white rounded-2xl shadow">
-        <table class="min-w-full text-sm">
-            <thead class="text-left bg-gray-50">
-                <tr>
-                    <th class="px-4 py-3">Type</th>
-                    <th class="px-4 py-3">Model</th>
-                    <th class="px-4 py-3">Serial #</th>
-                    <th class="px-4 py-3">Condition</th>
-                    <th class="px-4 py-3">Location</th>
-                    <th class="px-4 py-3">Status</th>
-                    <th class="px-4 py-3">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- example rows — replace with Twig loop -->
-                <tr class="border-t">
-                    <td class="px-4 py-3">Rifle</td>
-                    <td class="px-4 py-3">M4A1</td>
-                    <td class="px-4 py-3">M4-12345</td>
-                    <td class="px-4 py-3">Good</td>
-                    <td class="px-4 py-3">Armory A</td>
-                    <td class="px-4 py-3">
-                        <span class="text-sm text-green-600">Available</span>
-                    </td>
-                    <td class="px-4 py-3">
-                        <button
-                            class="px-2 py-1 text-xs border rounded-2xl"
-                            @click="openModal('issue', { itemId: 'M4-12345' })"
-                        >
-                            Issue
-                        </button>
-                        <button
-                            class="px-2 py-1 text-xs border rounded-2xl"
-                            @click="openModal('editItem', { itemId: 'M4-12345' })"
-                        >
-                            Edit
-                        </button>
-                    </td>
-                </tr>
-                <!-- more rows -->
-            </tbody>
-        </table>
-    </div>
-</section>
+<!-- Catalog table -->
+<div class="bg-white rounded-2xl shadow">
+    <table class="min-w-full text-sm">
+        <thead class="text-left bg-gray-50">
+            <tr>
+                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Model</th>
+                <th class="px-4 py-3">Serial #</th>
+                <th class="px-4 py-3">Condition</th>
+                <th class="px-4 py-3">Location</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- example rows — replace with Twig loop -->
+            <tr class="border-t">
+                <td class="px-4 py-3">Rifle</td>
+                <td class="px-4 py-3">M4A1</td>
+                <td class="px-4 py-3">M4-12345</td>
+                <td class="px-4 py-3">Good</td>
+                <td class="px-4 py-3">Armory A</td>
+                <td class="px-4 py-3">
+                    <span class="text-sm text-green-600">Available</span>
+                </td>
+                <td class="px-4 py-3">
+                    <button
+                        class="px-2 py-1 text-xs border rounded-2xl"
+                        @click="openModal('issue', { itemId: 'M4-12345' })"
+                    >
+                        Issue
+                    </button>
+                    <button
+                        class="px-2 py-1 text-xs border rounded-2xl"
+                        @click="openModal('editItem', { itemId: 'M4-12345' })"
+                    >
+                        Edit
+                    </button>
+                </td>
+            </tr>
+            <!-- more rows -->
+        </tbody>
+    </table>
+</div>
+{% include 'UserPage/Admin/_modals.html.twig' %} {% endblock %}

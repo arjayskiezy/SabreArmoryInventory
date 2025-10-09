@@ -1,46 +1,16 @@
-{% extends 'base.html.twig' %} {% block title %}Armory Dashboard{% endblock %}
+{% extends 'base.html.twig' %}
+
 {% block body %}
 <div class="flex">
     {% include 'UserPage/Admin/_sidebar.html.twig' %}
 
-    <!-- Main content column -->
-    <div class="flex-1 min-h-screen flex flex-col">
+    <div class="flex-1 min-h-screen flex flex-col bg-gray-50">
         {% include 'UserPage/Admin/_header.html.twig' %}
-
-        <!-- Dynamic main views (swap by setView) -->
         <main class="p-6 flex-1 overflow-y-auto">
-            <!-- Dashboard view -->
-            {% include 'UserPage/Admin/views/dashboard/_dashboard.html.twig' %}
-
-            <!-- Catalog view -->
-            {% include 'UserPage/Admin/views/catalog/_catalog.html.twig' %}
-
-            <!-- Requests view -->
-            {% include 'UserPage/Admin/views/requests/_requests.html.twig' %}
-
-            <!-- Issue / Return transactions view -->
-            {% include
-            'UserPage/Admin/views/transactions/_transactions.html.twig' %}
-
-            <!-- Inventory view -->
-
-            {% include 'UserPage/Admin/views/inventory/_inventory.html.twig' %}
-
-            <!-- Users management view -->
-
-            {% include 'UserPage/Admin/views/users/_users.html.twig' %}
-
-            <!-- Reports / analytics view -->
-            {% include 'UserPage/Admin/views/reports/_reports.html.twig' %}
-
-            <!-- Audit logs view -->
-            {% include 'UserPage/Admin/views/audit/_audit.html.twig' %}
-
-            <!-- Settings -->
-            {% include 'UserPage/Admin/views/settings/_settings.html.twig' %}
+            {% block admin_content %}{% endblock %}
         </main>
     </div>
 </div>
 
-<!-- Modals (issue, newItem, authorize, signatures placeholders) -->
-{% include 'UserPage/Admin/_modals.html.twig' %} {% endblock %}
+{% include 'UserPage/Admin/_modals.html.twig' %}
+{% endblock %}

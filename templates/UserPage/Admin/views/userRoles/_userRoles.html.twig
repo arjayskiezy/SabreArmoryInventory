@@ -1,5 +1,4 @@
-<section x-show="view === 'users'">
-    <div class="flex items-center justify-between mb-4">
+{% extends 'UserPage/Admin/index.html.twig' %} {% block title %}Users & Roles{% endblock %} {% block admin_content %}    <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-semibold">Users & Roles</h2>
         <button
             class="px-3 py-2 bg-accent text-white rounded"
@@ -34,4 +33,4 @@
             </tbody>
         </table>
     </div>
-</section>
+{% include 'UserPage/Admin/_modals.html.twig' %} {% endblock %}

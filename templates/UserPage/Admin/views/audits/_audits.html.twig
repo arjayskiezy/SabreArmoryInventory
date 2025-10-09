@@ -1,0 +1,24 @@
+{% extends 'UserPage/Admin/index.html.twig' %} {% block title %}Audit Logs{%
+endblock %} {% block admin_content %}
+<div class="flex items-center justify-between mb-4">
+    <h2 class="text-xl font-semibold">Audit Logs</h2>
+    <div class="text-sm text-gray-500">Full activity trail</div>
+</div>
+
+<div class="bg-white rounded shadow overflow-hidden">
+    <ul class="divide-y">
+        <li class="p-4 flex justify-between">
+            <div>
+                <div class="text-sm font-medium">
+                    Issue recorded: M4-12345 → Officer John
+                </div>
+                <div class="text-xs text-gray-500">
+                    By Officer Smith — 2025-09-24 14:22
+                </div>
+            </div>
+            <div class="text-xs text-gray-500">Action ID: A-00012</div>
+        </li>
+        <!-- more logs -->
+    </ul>
+</div>
+{% include 'UserPage/Admin/_modals.html.twig' %} {% endblock %}

@@ -11,7 +11,7 @@ final class ReportController extends AbstractController
     #[Route('/report', name: 'app_report')]
     public function index(): Response
     {
-        return $this->render('/UserPage/Admin/pages/report/report.html.twig', [
+        return $this->render('/UserPage/Admin/views/reports/_reports.html.twig', [
             'controller_name' => 'ReportController',
         ]);
     }
