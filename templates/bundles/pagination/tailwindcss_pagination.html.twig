@@ -1,0 +1,48 @@
+{# Modern Tailwind Pagination Template #}
+{% if pageCount > 1 %}
+    <nav class="flex items-center justify-center gap-2 select-none">
+        {# First Page #}
+        {% if first is defined and current != first %}
+            <a href="{{ path(route, knp_pagination_query(query, first, options)) }}"
+               class="px-3 py-2 text-sm font-medium text-blue-600 bg-white border border-gray-300 rounded-lg hover:bg-blue-50 transition">
+                « First
+            </a>
+        {% endif %}
+
+        {# Previous Page #}
+        {% if previous is defined %}
+            <a rel="prev" href="{{ path(route, knp_pagination_query(query, previous, options)) }}"
+               class="px-3 py-2 text-sm font-medium text-blue-600 bg-white border border-gray-300 rounded-lg hover:bg-blue-50 transition">
+                ‹ Prev
+            </a>
+        {% endif %}
+
+        {# Page Numbers #}
+        {% for page in pagesInRange %}
+            {% if page == current %}
+                <span class="px-3 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow">{{ page }}</span>
+            {% else %}
+                <a href="{{ path(route, knp_pagination_query(query, page, options)) }}"
+                   class="px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-blue-50 transition">
+                    {{ page }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {# Next Page #}
+        {% if next is defined %}
+            <a rel="next" href="{{ path(route, knp_pagination_query(query, next, options)) }}"
+               class="px-3 py-2 text-sm font-medium text-blue-600 bg-white border border-gray-300 rounded-lg hover:bg-blue-50 transition">
+                Next ›
+            </a>
+        {% endif %}
+
+        {# Last Page #}
+        {% if last is defined and current != last %}
+            <a href="{{ path(route, knp_pagination_query(query, last, options)) }}"
+               class="px-3 py-2 text-sm font-medium text-blue-600 bg-white border border-gray-300 rounded-lg hover:bg-blue-50 transition">
+                Last »
+            </a>
+        {% endif %}
+    </nav>
+{% endif %}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin\_Inventory;
 
 use App\Entity\Unit;
 use App\Form\UnitType;

@@ -7,6 +7,7 @@ use App\Entity\UnitType as UnitTypeEntity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,7 +34,7 @@ class UnitType extends AbstractType
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
             ])
-            ->add('price', null, [
+            ->add('price', NumberType::class, [
                 'attr' => ['class' => $inputClasses, 'placeholder' => '0.00'],
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
