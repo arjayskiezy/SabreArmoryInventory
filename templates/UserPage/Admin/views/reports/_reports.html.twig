@@ -1,38 +1,78 @@
-{% extends 'UserPage/Admin/index.html.twig' %} {% block title %}Analytics &
-Reporting{% endblock %} {% block admin_content %}
-<div class="flex flex-col mb-4">
+{% extends 'UserPage/Admin/index.html.twig' %}
+
+{% block title %}Analytics & Reporting{% endblock %}
+
+{% block admin_content %}
+<div class="flex flex-col space-y-6">
     <!-- Header section -->
-    <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center justify-between">
         <div>
             <h2 class="text-xl font-semibold">Analytics & Reporting</h2>
-            <div class="text-sm text-gray-500">
-                Export usage reports, trends, overdue items
-            </div>
+            <p class="text-sm text-gray-500">
+                Export usage reports, trends, and overdue insights
+            </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-2">
+            <button
+                @click="openModal('filters')"
+                class="bg-tertiary text-white text-sm font-medium px-4 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
+            >
+                Filters
+            </button>
+            <button
+                @click="openModal('export')"
+                class="bg-primary text-white text-sm font-medium px-4 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
+            >
+                Export Report
+            </button>
         </div>
     </div>
 
     <!-- Analytics cards -->
-    <div class="bg-white rounded-2xl shadow p-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div class="p-4 border rounded-2xl">
-                <div class="text-xs text-gray-500">Issued This Month</div>
-                <div class="text-2xl font-bold">342</div>
-            </div>
-            <div class="p-4 border rounded-2xl">
-                <div class="text-xs text-gray-500">Overdue Items</div>
-                <div class="text-2xl font-bold text-red-600">5</div>
-            </div>
-            <div class="p-4 border rounded-2xl">
-                <div class="text-xs text-gray-500">Avg Issue Time</div>
-                <div class="text-2xl font-bold">1.2 hrs</div>
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-5 bg-white border rounded-xl shadow hover:shadow-md transition-shadow duration-200">
+            <div class="text-xs text-gray-500 mb-1">Issued This Month</div>
+            <div class="text-3xl font-bold text-gray-800">342</div>
+            <div class="text-xs text-green-600 mt-1">+12% vs last month</div>
+        </div>
+
+        <div class="p-5 bg-white border rounded-xl shadow hover:shadow-md transition-shadow duration-200">
+            <div class="text-xs text-gray-500 mb-1">Overdue Items</div>
+            <div class="text-3xl font-bold text-red-600">5</div>
+            <div class="text-xs text-red-500 mt-1">2 more than last week</div>
+        </div>
+
+        <div class="p-5 bg-white border rounded-xl shadow hover:shadow-md transition-shadow duration-200">
+            <div class="text-xs text-gray-500 mb-1">Avg Issue Time</div>
+            <div class="text-3xl font-bold text-gray-800">1.2 hrs</div>
+            <div class="text-xs text-gray-500 mt-1">↓ 8% improvement</div>
+        </div>
+    </section>
+
+    <!-- Charts / Reports Section -->
+    <section class="bg-white rounded-xl shadow p-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-gray-800">Usage Trends</h3>
+            <div class="flex gap-2">
+                <button
+                    class="bg-secondary text-white text-sm font-medium px-3 py-1.5 rounded-lg shadow transition-transform transform hover:scale-105"
+                >
+                    Monthly
+                </button>
+                <button
+                    class="bg-tertiary text-white text-sm font-medium px-3 py-1.5 rounded-lg shadow transition-transform transform hover:scale-105"
+                >
+                    Weekly
+                </button>
             </div>
         </div>
 
-        <!-- Placeholder for charts or export -->
-        <div class="mt-6 h-48 flex items-center justify-center text-gray-400">
-            [Export / Filters / Charts placeholders]
+        <!-- Placeholder for chart -->
+        <div class="h-64 flex items-center justify-center text-gray-400 border-2 border-dashed rounded-xl">
+            [ Chart Placeholder — integrate Chart.js or ApexCharts here ]
         </div>
-    </div>
+    </section>
 </div>
-
-{% include 'UserPage/Admin/_modals.html.twig' %} {% endblock %}
+{% endblock %}

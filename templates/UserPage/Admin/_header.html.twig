@@ -1,98 +1,64 @@
 <header
-    class="flex items-center justify-between px-4 md:px-8 py-4 bg-white shadow-md"
+    class="flex items-center justify-between px-4 md:px-8 py-3 bg-white shadow-sm border-gray-100"
 >
     <!-- Left section -->
     <div class="flex items-center gap-4">
-        <!-- Mobile sidebar toggle -->
+        <!-- Mobile Sidebar Toggle -->
         <button
             type="button"
-            class="md:hidden p-2 rounded hover:bg-gray-100 transition"
+            class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition"
             @click="mobileSidebar = true"
             aria-label="Open sidebar"
         >
-            <!-- Heroicons Menu -->
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
+            <svg xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6 text-gray-700"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                />
+                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
         </button>
 
-        <!-- Search -->
-        <div class="relative">
-            <input
-                type="search"
-                x-model="searchQuery"
-                @input.debounce.300="performSearch"
-                placeholder="Search by model, serial, category..."
-                class="pl-10 pr-4 py-2 rounded-lg border border-gray-200 w-64 focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
-            />
-            <div
-                class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"
-            >
-                <!-- Heroicons Magnifying Glass -->
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1110.5 3a7.5 7.5 0 016.15 13.65z"
-                    />
-                </svg>
-            </div>
-        </div>
+        <!-- Logo / Title -->
+        <h1 class="hidden md:block text-2xl font-bold text-gray-800 tracking-tight">
+            Overview
+        </h1>
+    </div>
 
-        <!-- Quick stats (desktop only) -->
-        <div class="hidden md:flex gap-3 ml-6">
-            <div class="px-3 py-2 bg-gray-100 rounded-2xl shadow text-sm">
-                <div class="text-xs text-gray-500">Total Weapons</div>
-                <div class="font-semibold text-gray-800">1,234</div>
-            </div>
-            <div class="px-3 py-2 bg-gray-100 rounded-2xl shadow text-sm">
-                <div class="text-xs text-gray-500">Checked Out</div>
-                <div class="font-semibold text-gray-800">42</div>
-            </div>
-            <div class="px-3 py-2 bg-gray-100 rounded-2xl shadow text-sm">
-                <div class="text-xs text-gray-500">Pending Requests</div>
-                <div class="font-semibold text-gray-800">7</div>
-            </div>
+    <!-- Center section (Quick Stats) -->
+    <div class="hidden lg:flex items-center gap-4">
+        <div class="flex gap-4">
+            {% set stats = [
+                { label: 'Total Weapons', value: '1,234' },
+                { label: 'Checked Out', value: '42' },
+                { label: 'Pending Requests', value: '7' }
+            ] %}
+            {% for s in stats %}
+                <div class="px-4 py-2 bg-gray-50 rounded-xl shadow-sm border border-gray-100 text-sm">
+                    <div class="text-xs text-gray-500">{{ s.label }}</div>
+                    <div class="font-semibold text-gray-800">{{ s.value }}</div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
     <!-- Right section -->
-    <div class="flex items-center gap-3">
-        <!-- Action buttons -->
-        <button
-            type="button"
-            class="px-4 py-2 rounded-2xl bg-accent text-white hover:bg-accent-dark transition"
-            @click="openModal('newRequest')"
-        >
-            New Request
-        </button>
-        <button
-            type="button"
-            class="px-4 py-2 rounded-2xl border hover:bg-gray-50 transition"
-            @click="openModal('issue')"
-        >
-            Issue / Return
-        </button>
-        <!-- User menu -->
-        {% include 'UserPage/Admin/_user_menu.html.twig' %}
+    <div class="flex items-center gap-2">
+        <!-- Action Buttons -->
+        <div class="hidden sm:flex gap-2">
+            <button
+                class="bg-primary text-white font-medium py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform hover:scale-105"
+                @click="openModal('newRequest')"
+            >
+                New Request
+            </button>
+            <button
+                class="bg-secondary text-white font-medium py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform hover:scale-105"
+                @click="openModal('issue')"
+            >
+                Issue / Return
+            </button>
+        </div>
+
         <!-- Notifications -->
         {% include 'UserPage/Admin/_notifications.html.twig' %}
     </div>

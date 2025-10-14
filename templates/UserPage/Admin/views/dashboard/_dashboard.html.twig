@@ -1,99 +1,54 @@
 {% extends 'UserPage/Admin/index.html.twig' %} {% block title %}Firearm &
-Equipment Catalog{% endblock %} {% block admin_content %}
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-    <!-- widget: pending requests -->
-    <div class="bg-white rounded-2xl shadow p-4">
-        <div class="flex items-center justify-between">
+Equipment Dashboard{% endblock %} {% block admin_content %}
+<div class="space-y-8">
+    <!-- Top Summary Widgets -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {% set widgets = [ { title: 'Total Firearms', value: '1,234', note: 'In
+        stock' }, { title: 'Checked Out', value: '42', note: 'Currently issued'
+        }, { title: 'Low Ammo', value: '5', note: 'Below threshold' }, { title:
+        'Pending Requests', value: '7', note: 'Awaiting approval' }, ] %} {% for
+        w in widgets %}
+        <div
+            class="bg-white rounded-xl shadow p-4 flex flex-col justify-between"
+        >
             <div>
-                <div class="text-xs text-gray-500">Pending Requests</div>
-                <div class="text-2xl font-bold">7</div>
+                <div class="text-xs text-gray-500">{{ w.title }}</div>
+                <div class="text-2xl font-bold">{{ w.value }}</div>
             </div>
-            <div class="text-sm text-gray-400">Review & Approve</div>
+            <div class="text-xs text-gray-400 mt-1">{{ w.note }}</div>
         </div>
-        <div class="mt-4 text-sm text-gray-600">
-            <button
-                class="px-3 py-1 rounded-2xl bg-accent text-white"
-                @click="setView('requests')"
-            >
-                Open Requests
-            </button>
-        </div>
-    </div>
+        {% endfor %}
+    </section>
 
-    <!-- widget: low ammo alerts -->
-    <div class="bg-white rounded-2xl shadow p-4">
-        <div class="text-xs text-gray-500">Low Ammo Alerts</div>
-        <div class="mt-2">
-            <ul class="space-y-2 text-sm">
-                <li class="flex justify-between items-center">
-                    <div>
-                        9mm Rounds
-                        <span class="ml-2 text-xs text-gray-400"
-                            >Supplier: Alpha</span
-                        >
-                    </div>
-                    <div class="text-red-600 font-semibold">12 left</div>
-                </li>
-                <li class="flex justify-between items-center">
-                    <div>5.56mm Rounds</div>
-                    <div class="text-red-600 font-semibold">20 left</div>
-                </li>
-            </ul>
+    <!-- Charts Section -->
+    <section
+        x-data="dashboardData()"
+        x-init="loadData()"
+        class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+    >
+        <div class="bg-white rounded-xl shadow p-4 h-100">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="font-semibold">Issuance Trends</h2>
+                <span class="text-xs text-gray-400">Last 4 weeks</span>
+            </div>
+            <canvas id="issuanceChart" class="p-10 w-full h-full"></canvas>
         </div>
-    </div>
 
-    <!-- widget: audit summary -->
-    <div class="bg-white rounded-2xl shadow p-4">
-        <div class="text-xs text-gray-500">Recent Audit Activity</div>
-        <div class="mt-2 text-sm">
-            <ul class="space-y-1">
-                <li>Officer Smith issued M4-123 (2 hrs ago)</li>
-                <li>Maintenance logged for Pistol-45 (1 day ago)</li>
-            </ul>
+        <div class="bg-white rounded-xl shadow p-4 h-100">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="font-semibold">Category Distribution</h2>
+                <span class="text-xs text-gray-400">Asset Categories</span>
+            </div>
+            <canvas id="categoryChart" class="p-10 w-full h-full"></canvas>
         </div>
-        <div class="mt-4">
-            <button
-                class="px-3 py-1 rounded-2xl border"
-                @click="setView('audit')"
-            >
-                View Logs
-            </button>
-        </div>
-    </div>
+    </section>
 </div>
-
-<!-- Analytics / Charts area (placeholders) -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-    <div class="bg-white rounded-2xl shadow p-4">
-        <div class="flex items-center justify-between mb-3">
-            <div class="font-semibold">Issuance Over Time</div>
-            <div class="text-xs text-gray-400">Last 30 days</div>
-        </div>
-        <!-- Insert your charting library canvas here (Chart.js, ApexCharts) -->
-        <div class="h-48 flex items-center justify-center text-gray-400">
-            [Chart placeholder]
-        </div>
-    </div>
-
-    <div class="bg-white rounded-2xl shadow p-4">
-        <div class="flex items-center justify-between mb-3">
-            <div class="font-semibold">Top Used Weapons</div>
-            <div class="text-xs text-gray-400">By issues</div>
-        </div>
-        <div class="space-y-2 text-sm">
-            <div class="flex justify-between">
-                <div>M4A1</div>
-                <div>342</div>
-            </div>
-            <div class="flex justify-between">
-                <div>Pistol-45</div>
-                <div>198</div>
-            </div>
-            <div class="flex justify-between">
-                <div>Sabre-1</div>
-                <div>30</div>
-            </div>
-        </div>
-    </div>
-</div>
-{% include 'UserPage/Admin/_modals.html.twig' %} {% endblock %}
+{% endblock %} 
+{% block javascripts %}
+{{ encore_entry_script_tags("app") }}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        initDashboardCharts();
+    });
+</script>
+{% endblock %}

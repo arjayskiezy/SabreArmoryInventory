@@ -1,9 +1,12 @@
+@custom-variant dark (&:where(.dark, .dark *));
 @import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "remixicon/fonts/remixicon.css";
+
 @source not "../../public";
 
 body {
-    background-color: rgb(231, 231, 231);
+    background-color: rgb(255, 255, 255);
     font-family: "Inter", sans-serif;
 }
 /* ✅ Your custom scrollbar styles */
@@ -16,28 +19,6 @@ body {
     background: rgba(0, 0, 0, 0.15);
     border-radius: 8px;
 }
-
-/* Custom primary & secondary colors */
-.bg-primary {
-    background-color: #ff7828;
-}
-.text-primary {
-    color: #ff7828;
-}
-.border-primary {
-    border-color: #ff7828;
-}
-
-.bg-secondary {
-    background-color: #6c6c6c;
-}
-.text-secondary {
-    color: #6c6c6c;
-}
-.border-secondary {
-    border-color: #6c6c6c;
-}
-
 
 /* Primary (Red) */
 /* .bg-primary {
@@ -61,13 +42,9 @@ body {
     border-color: #000000;
 } */
 
-
-
-
 /* Gradient text example */
 .text-gradient {
     background-image: linear-gradient(to right, #ff7828, #6c6c6c);
-    /* background-image: linear-gradient(to right, #d42121, #000000); */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -80,4 +57,178 @@ body {
     --color-card: #ffffff;
     --color-primary: #ff7828;
     --color-secondary: #6c6c6c;
+}
+
+/* ================================
+   Custom Primary & Secondary Colors
+   ================================ */
+:root {
+    --primary-color: #e66a22;
+    --primary-hover: #e66a22; /* slightly darker for hover */
+    --secondary-color: #6c6c6c;
+    --secondary-hover: #5a5a5a; /* slightly darker for hover */
+    --tertiary-color: #8c8f96; /* Gray tone */
+    --tertiary-hover: #8c8f96; /* Darker gray */
+}
+
+/* Dark mode colors */
+:root.dark {
+    --primary-color: #ff7828;   /* example: slightly brighter for dark bg */
+    --primary-hover: #ff9a50;
+    --secondary-color: #c4c4c4;
+    --secondary-hover: #a6a6a6;
+    --tertiary-color: #aaaaaa;
+    --tertiary-hover: #888888;
+
+    /* Card / Background */
+    --color-card: #1f2937;      /* dark gray card bg */
+    --color-sidebar: #111827;
+    --color-accent: #ff7828;
+    --color-danger: #ef4444;
+    --color-success: #16a34a;
+
+    /* Body background */
+    --body-bg: #121212;
+    --text-color: #e5e5e5;
+}
+
+
+/* ================================
+   Base Color Utilities
+   ================================ */
+.bg-primary {
+    background-color: var(--primary-color);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.text-primary {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+.border-primary {
+    border-color: var(--primary-color);
+    transition: border-color 0.3s ease;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.text-secondary {
+    color: var(--secondary-color);
+    transition: color 0.3s ease;
+}
+.border-secondary {
+    border-color: var(--secondary-color);
+    transition: border-color 0.3s ease;
+}
+
+/* ================================
+   Hover Effects
+   ================================ */
+.bg-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+.text-primary:hover {
+    color: var(--primary-hover);
+}
+.border-primary:hover {
+    border-color: var(--primary-hover);
+}
+
+.bg-secondary:hover {
+    background-color: var(--secondary-hover);
+    transform: translateY(-2px);
+}
+.text-secondary:hover {
+    color: var(--secondary-hover);
+}
+.border-secondary:hover {
+    border-color: var(--secondary-hover);
+}
+
+/* Optional — for buttons or clickable elements */
+.button {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.button-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+.button-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+.button-secondary {
+    background-color: var(--secondary-color);
+    color: #fff;
+}
+.button-secondary:hover {
+    background-color: var(--secondary-hover);
+}
+
+/* ================================
+   Tertiary Color Styles
+   ================================ */
+.bg-tertiary {
+    background-color: var(--tertiary-color);
+    color: #fff;
+}
+.bg-tertiary:hover {
+    background-color: var(--tertiary-hover);
+    transform: translateY(-2px);
+}
+
+.text-tertiary {
+    color: var(--tertiary-color);
+}
+.text-tertiary:hover {
+    color: var(--tertiary-hover);
+}
+
+.border-tertiary {
+    border-color: var(--tertiary-color);
+}
+.border-tertiary:hover {
+    border-color: var(--tertiary-hover);
+}
+
+/* Optional — for buttons */
+.button-tertiary {
+    background-color: var(--tertiary-color);
+    color: #fff;
+}
+.button-tertiary:hover {
+    background-color: var(--tertiary-hover);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.fade-slide-in {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.fade-slide-in.delay-200 {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }

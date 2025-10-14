@@ -49,6 +49,17 @@ class UserType extends AbstractType
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
             ])
+            ->add('plainPassword', PasswordType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Password',
+                'label_attr' => ['class' => $labelClasses],
+                'row_attr' => ['class' => $wrapperClasses],
+                'attr' => [
+                    'class' => $inputClasses,
+                    'placeholder' => 'Leave blank to keep current password'
+                ],
+            ])
             ->add('user_rank', EntityType::class, [
                 'class' => Rank::class,
                 'choice_label' => 'name',

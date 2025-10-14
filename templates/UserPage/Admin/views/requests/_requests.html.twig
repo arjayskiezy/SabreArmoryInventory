@@ -1,37 +1,41 @@
 {% extends 'UserPage/Admin/index.html.twig' %} {% block title %}Armory
 Requests{% endblock %} {% block admin_content %}
 <div class="flex items-center justify-between mb-4">
-    <h2 class="text-xl font-semibold">Armory Requests</h2>
-    <div class="text-sm text-gray-500">Approve, deny, or log issue</div>
+    <div>
+        <h2 class="text-xl font-semibold">Armory Requests</h2>
+        <p class="text-sm text-gray-500">Approve, deny, or log issue</p>
+    </div>
 </div>
 
-<div class="bg-white rounded-2xl shadow overflow-hidden">
+<div class="bg-white rounded-xl shadow overflow-hidden">
     <ul>
-        <!-- sample request (replace with Twig loop) -->
-        <li class="p-4 border-b flex justify-between items-start">
+        <!-- Example request — replace with Twig loop -->
+        <li class="p-4 flex justify-between items-start">
             <div>
-                <div class="font-medium">
+                <div class="font-medium text-gray-800">
                     Request #R-00123 — Officer Jane Doe
                 </div>
                 <div class="text-xs text-gray-500">For: Training / M4A1</div>
                 <div class="text-xs text-gray-500">Requested: 2025-09-20</div>
             </div>
+
             <div class="flex items-center gap-2">
                 <button
-                    class="px-3 py-1 bg-green-600 text-white rounded-2xl"
                     @click="openModal('authorize', { reqId: 'R-00123' })"
+                    class="bg-primary text-white text-sm font-medium px-4 py-1.5 rounded-lg shadow transition-transform transform hover:scale-105"
                 >
                     Authorize
                 </button>
                 <button
-                    class="px-3 py-1 border rounded-2xl"
                     @click="openModal('deny', { reqId: 'R-00123' })"
+                    class="bg-secondary text-white text-sm font-medium px-4 py-1.5 rounded-lg shadow transition-transform transform hover:scale-105"
                 >
                     Deny
                 </button>
             </div>
         </li>
-        <!-- more requests -->
+        <!-- Repeat for other requests -->
     </ul>
 </div>
-{% include 'UserPage/Admin/_modals.html.twig' %} {% endblock %}
+
+{% endblock %}

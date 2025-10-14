@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/user/roles')]
 final class UserRolesController extends AbstractController
@@ -27,7 +28,7 @@ final class UserRolesController extends AbstractController
         $users = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            10
+            9
         );
 
         return $this->render('UserPage/Admin/views/userRoles/_userRoles.html.twig', [
@@ -75,15 +76,23 @@ final class UserRolesController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_roles_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(UserType::class, $user, [
             'action' => $this->generateUrl('app_user_roles_edit', ['id' => $user->getId()]),
             'method' => 'POST',
+            'is_edit' => $user->getId() !== null,
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $plain = $form->has('plainPassword') ? $form->get('plainPassword')->getData() : null;
+
+            if ($plain) {
+                $hashed = $passwordHasher->hashPassword($user, $plain);
+                $user->setPassword($hashed);
+            }
             try {
                 $entityManager->flush();
                 $this->addFlash('Success', 'User updated successfully.');

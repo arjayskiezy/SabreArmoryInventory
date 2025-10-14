@@ -39,36 +39,4 @@
             x-show="unreadNotifications > 0"
         ></span>
     </button>
-
-    <!-- Notifications Dropdown -->
-    <div
-        x-show="showNotifications"
-        x-transition
-        x-cloak
-        class="absolute right-0 mt-2 w-96 bg-white rounded shadow-lg overflow-hidden z-50"
-    >
-        <div class="p-3 border-b text-sm font-semibold">
-            Notifications
-        </div>
-        <div class="max-h-64 overflow-y-auto scrollbar-thin">
-            <template x-for="note in notifications" :key="note.id">
-                <div class="p-3 hover:bg-gray-50 flex justify-between gap-3">
-                    <div>
-                        <div class="text-sm font-medium" x-text="note.titles"></div>
-                        <div class="text-xs text-gray-500" x-text="note.time"></div>
-                    </div>
-                    <div class="text-xs font-semibold" x-text="note.level"></div>
-                </div>
-            </template>
-            <div
-                x-show="notifications.length === 0"
-                class="p-3 text-sm text-gray-500"
-            >
-                No notifications
-            </div>
-        </div>
-        <div class="p-2 text-center text-xs text-gray-500">
-            Auto-updates via WebSocket
-        </div>
-    </div>
 </div>
