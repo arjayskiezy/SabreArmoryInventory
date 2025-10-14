@@ -2,6 +2,7 @@
 
 namespace App\Controller\Auth;
 
+use App\Repository\RankRepository;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,27 +34,40 @@ final class AuthController extends AbstractController
     }
 
     #[Route('/signup', name: 'app_signup')]
-    public function signup(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): Response
+    public function signup(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em, RankRepository $rankRepository): Response
     {
         if ($request->isMethod('POST')) {
+            $full_name = $request->request->get('full_name');
             $email = $request->request->get('email');
             $password = $request->request->get('password');
-            $confirmPassword = $request->request->get('confirm-password');
+            $confirm_password = $request->request->get('confirm_password');
+            $user_rank = $request->request->get('user_rank');
 
-            if ($password !== $confirmPassword) {
-                $this->addFlash('error', 'Passwords do not match!');
+            if ($password !== $confirm_password) {
+                $this->addFlash('Error', 'Passwords do not match!');
                 return $this->redirectToRoute('app_signup');
             }
 
             $existingUser = $em->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($existingUser) {
-                $this->addFlash('error', 'Email already registered!');
+                $this->addFlash('Error', 'Email already registered!');
                 return $this->redirectToRoute('app_signup');
             }
 
             $user = new User();
+            $user->setFullName($full_name);
             $user->setEmail($email);
             $user->setRoles(['ROLE_USER']);
+            $rankId = $request->request->get('user_rank');
+            $user_rank = $rankRepository->find($rankId);   
+
+            if (!$user_rank) {
+                $this->addFlash('error', 'Invalid rank selected.');
+                return $this->redirectToRoute('app_signup');
+            }
+
+            // assign the object to the user
+            $user->setUserRank($user_rank);
 
             $hashedPassword = $passwordHasher->hashPassword($user, $password);
             $user->setPassword($hashedPassword);
@@ -61,11 +75,11 @@ final class AuthController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', 'Account created successfully! You can now login.');
+            $this->addFlash('Success', 'Account created successfully! You can now login.');
             return $this->redirectToRoute('app_login');
         }
-
-        return $this->render('Auth/signup/signup.html.twig');
+        $ranks = $rankRepository->findAll();
+        return $this->render('Auth/signup/signup.html.twig', ['ranks' => $ranks,]);
     }
 
     #[Route('/forgotPassword', name: 'app_forgot_password')]
@@ -73,5 +87,4 @@ final class AuthController extends AbstractController
     {
         return $this->render('Auth/forgotPassword/forgotPassword.html.twig');
     }
-        
 }

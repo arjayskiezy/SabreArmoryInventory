@@ -22,7 +22,6 @@ class UnitTypeFixtures extends Fixture
             $type = new UnitType();
             $type->setId($id);
             $type->setName($data['name']);
-            $type->setQuantity($data['quantity']); 
             $manager->persist($type);
         }
 

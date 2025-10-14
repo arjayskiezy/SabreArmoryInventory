@@ -5,6 +5,7 @@ namespace App\Controller\Admin\_Inventory;
 use App\Entity\Unit;
 use App\Form\UnitType;
 use App\Repository\UnitRepository;
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +16,11 @@ use Symfony\Component\Routing\Attribute\Route;
 final class UnitController extends AbstractController
 {
     #[Route(name: 'app_unit_index', methods: ['GET'])]
-    public function index(UnitRepository $unitRepository, Request $request): Response
+    public function index(UnitRepository $unitRepository, StockRepository $stockRepository, Request $request): Response
     {
         return $this->render('UserPage/Admin/views/inventory/_inventory.html.twig', [
             'units' => $unitRepository->findAll(),
+            'stocks' => $stockRepository->findAll(),
             'focus' => $request->query->get('focus', null),
         ]);
     }
@@ -83,7 +85,7 @@ final class UnitController extends AbstractController
 
             if ($imageFile) {
                 $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $unit->getName());
-                $extension = $imageFile->guessExtension() ?: 'png'; 
+                $extension = $imageFile->guessExtension() ?: 'png';
                 $newFilename = $safeFilename . '.' . $extension;
 
                 $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/uploads';

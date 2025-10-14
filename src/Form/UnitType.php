@@ -40,10 +40,10 @@ class UnitType extends AbstractType
                 'row_attr' => ['class' => $wrapperClasses],
             ])
             ->add('image_path', FileType::class, [
-                'label' => 'Unit Image',
                 'mapped' => false,
                 'required' => false,
                 'attr' => ['class' => $inputClasses],
+                'label_attr' => ['class' => $labelClasses],
                 'constraints' => [
                     new File([
                         'maxSize' => '5M',
@@ -60,7 +60,7 @@ class UnitType extends AbstractType
             ])
             ->add('type', EntityType::class, [
                 'class' => UnitTypeEntity::class,
-                'choice_label' => 'name', 
+                'choice_label' => 'name',
                 'placeholder' => 'Select unit type',
                 'attr' => ['class' => $inputClasses],
                 'label_attr' => ['class' => $labelClasses],

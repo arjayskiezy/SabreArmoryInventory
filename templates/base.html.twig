@@ -7,26 +7,27 @@
         <link rel="icon" href="{{ asset('images/logo-head.png') }}" />
 
         {% block stylesheets %}
-            {{ encore_entry_link_tags("app") }}
+        {{
+            encore_entry_link_tags("app")
+        }}
         {% endblock %}
     </head>
     <body x-data="dashboard()">
-        {% block body %}{% endblock %}
+        {% include './UserPage/Admin/alert/alert.html.twig' %} {% block body %}{%
+        endblock %} {% block javascripts %}
+        {{ encore_entry_script_tags("app") }}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags("app") }}
-
-            <!-- Optional: place Alpine modal directive here if needed -->
-            <script>
-                document.addEventListener("alpine:init", () => {
-                    Alpine.directive("modal", (el) => {
-                        el.addEventListener("click", e => {
-                            e.preventDefault();
-                            loadModal(el.getAttribute("href"));
-                        });
+        <!-- Optional: place Alpine modal directive here if needed -->
+        <script>
+            document.addEventListener("alpine:init", () => {
+                Alpine.directive("modal", (el) => {
+                    el.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        loadModal(el.getAttribute("href"));
                     });
                 });
-            </script>
+            });
+        </script>
         {% endblock %}
     </body>
 </html>

@@ -1,21 +1,38 @@
-{% extends 'base.html.twig' %} {% block title %}SignUp{% endblock %} {% block
-body %} {% include 'NavBar/landingPageHeader.html.twig' %}
+{% extends 'base.html.twig' %}
+{% block title %}SignUp{% endblock %}
+{% block body %}
+{% include 'NavBar/landingPageHeader.html.twig' %}
+
 <div class="isolate py-42 flex items-center justify-center bg-gray-200 px-4">
     <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-    <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-1/2 -z-10 aspect-1155/678 w-180 max-w-none translate-x-[20px] -translate-y-[100px]  rotate-30 bg-linear-to-tr from-primary to-secondary opacity-20 sm:right-[calc(50%-40rem)] sm:w-288.75"></div>
-  </div>
+        <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-1/2 -z-10 aspect-1155/678 w-180 max-w-none translate-x-[20px] -translate-y-[100px]  rotate-30 bg-linear-to-tr from-primary to-secondary opacity-20 sm:right-[calc(50%-40rem)] sm:w-288.75"></div>
+    </div>
+
     <div class="max-w-md w-full bg-white shadow-lg rounded-2xl p-8">
         <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">
             Create a new account
         </h2>
 
         <form action="{{ path('app_signup') }}" method="post" class="space-y-6">
+            <!-- Full Name -->
             <div>
-                <label
-                    for="email"
-                    class="block text-sm font-medium text-gray-700"
-                    >Email address</label
-                >
+                <label for="full_name" class="block text-sm font-medium text-gray-700">
+                    Full Name
+                </label>
+                <input
+                    type="text"
+                    name="full_name"
+                    id="full_name"
+                    required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:text-sm"
+                />
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">
+                    Email address
+                </label>
                 <input
                     type="email"
                     name="email"
@@ -26,12 +43,11 @@ body %} {% include 'NavBar/landingPageHeader.html.twig' %}
                 />
             </div>
 
+            <!-- Password -->
             <div>
-                <label
-                    for="password"
-                    class="block text-sm font-medium text-gray-700"
-                    >Password</label
-                >
+                <label for="password" class="block text-sm font-medium text-gray-700">
+                    Password
+                </label>
                 <input
                     type="password"
                     name="password"
@@ -41,19 +57,35 @@ body %} {% include 'NavBar/landingPageHeader.html.twig' %}
                 />
             </div>
 
+            <!-- Confirm Password -->
             <div>
-                <label
-                    for="confirm-password"
-                    class="block text-sm font-medium text-gray-700"
-                    >Confirm Password</label
-                >
+                <label for="confirm_password" class="block text-sm font-medium text-gray-700">
+                    Confirm Password
+                </label>
                 <input
                     type="password"
-                    name="confirm-password"
-                    id="confirm-password"
+                    name="confirm_password"
+                    id="confirm_password"
                     required
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:text-sm"
                 />
+            </div>
+
+            <!-- User Rank -->
+            <div>
+                <label for="user_rank" class="block text-sm font-medium text-gray-700">
+                    User Rank
+                </label>
+                <select
+                    name="user_rank"
+                    id="user_rank"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:text-sm"
+                >
+                    <option value="">Select a rank</option>
+                    {% for rank in ranks %}
+                        <option value="{{ rank.id }}">{{ rank.name }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div>
@@ -68,13 +100,12 @@ body %} {% include 'NavBar/landingPageHeader.html.twig' %}
 
         <p class="mt-6 text-center text-sm text-gray-600">
             Already have an account?
-            <a
-                href="{{ path('app_login') }}"
-                class="font-medium text-primary hover:text-secondary"
-            >
+            <a href="{{ path('app_login') }}" class="font-medium text-primary hover:text-secondary">
                 Sign in
             </a>
         </p>
     </div>
 </div>
-{% include 'NavBar/landingPageFooter.html.twig' %}{% endblock %}
+
+{% include 'NavBar/landingPageFooter.html.twig' %}
+{% endblock %}

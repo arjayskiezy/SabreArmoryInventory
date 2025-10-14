@@ -43,12 +43,6 @@ class UserType extends AbstractType
                 'row_attr' => ['class' => $wrapperClasses],
                 'attr' => ['class' => 'space-x-3 text-sm text-gray-700'],
             ])
-            ->add('password', PasswordType::class, [
-                'attr' => ['class' => $inputClasses, 'placeholder' => 'Enter password'],
-                'label' => 'Password',
-                'label_attr' => ['class' => $labelClasses],
-                'row_attr' => ['class' => $wrapperClasses],
-            ])
             ->add('full_name', TextType::class, [
                 'attr' => ['class' => $inputClasses, 'placeholder' => 'Enter full name'],
                 'label' => 'Full Name',
@@ -57,7 +51,7 @@ class UserType extends AbstractType
             ])
             ->add('user_rank', EntityType::class, [
                 'class' => Rank::class,
-                'choice_label' => 'name', 
+                'choice_label' => 'name',
                 'placeholder' => 'Select user rank',
                 'label' => 'User Rank',
                 'attr' => ['class' => $inputClasses],
@@ -73,6 +67,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'is_edit' => false, // default value
         ]);
     }
 }

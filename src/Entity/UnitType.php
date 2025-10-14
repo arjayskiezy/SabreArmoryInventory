@@ -15,9 +15,6 @@ class UnitType
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?int $quantity = 0;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -40,14 +37,4 @@ class UnitType
         return $this;
     }
 
-    public function getQuantity(): ?int
-    {
-        return $this->quantity;
-    }
-
-    public function setQuantity(int $quantity): static
-    {
-        $this->quantity = $quantity;
-        return $this;
-    }
 }

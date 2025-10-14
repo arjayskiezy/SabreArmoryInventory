@@ -1,46 +1,75 @@
-{% extends 'base.html.twig' %}
+<h1 class="text-2xl font-bold mb-6">User Details</h1>
 
-{% block title %}User{% endblock %}
-
-{% block body %}
-    <h1>User</h1>
-
-    <table class="table">
-        <tbody>
+<div class="bg-white shadow rounded-lg overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+        <tbody class="divide-y divide-gray-200">
             <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Email
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ user.email }}
+                </td>
             </tr>
             <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Roles
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {% if user.roles %} {% for role in user.roles %}
+                    <span
+                        class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded mr-1"
+                    >
+                        {{ role }}
+                    </span>
+                    {% endfor %} {% else %}
+                    <span class="text-gray-500 italic">No roles assigned</span>
+                    {% endif %}
+                </td>
             </tr>
             <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Full Name
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ user.fullName }}
+                </td>
             </tr>
             <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Created At
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}
+                </td>
             </tr>
             <tr>
-                <th>Full_name</th>
-                <td>{{ user.fullName }}</td>
-            </tr>
-            <tr>
-                <th>Created_at</th>
-                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated_at</th>
-                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <th
+                    class="px-6 py-3 text-left text-sm font-medium text-gray-600"
+                >
+                    Updated At
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}
+                </td>
             </tr>
         </tbody>
     </table>
+</div>
 
-    <a href="{{ path('app_user_roles_index') }}">Back to list</a>
-
-    <a href="{{ path('app_user_roles_edit', {'id': user.id}) }}">edit</a>
-
-    {{ include('UserPage/Admin/forms/user_roles/_delete_form.html.twig') }}
-{% endblock %}
+<div class="mt-6 flex items-center gap-3">
+    {{
+        include("UserPage/Admin/forms/user_roles/_edit_link.html.twig", {
+            user: user
+        })
+    }}
+    {{ include("UserPage/Admin/forms/user_roles/_delete_form.html.twig") }}
+</div>

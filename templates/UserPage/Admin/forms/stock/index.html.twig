@@ -1,0 +1,33 @@
+<div>
+    <h3 class="text-lg font-semibold mb-4">All Stock Records</h3>
+    <div class="overflow-x-auto max-h-[60vh]">
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+            <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+                <tr>
+                    <th class="px-4 py-2 text-left">Stock ID</th>
+                    <th class="px-4 py-2 text-left">Unit</th>
+                    <th class="px-4 py-2 text-left">Quantity</th>
+                    <th class="px-4 py-2 text-left">Created At</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                {% for stock in stocks %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-4 py-2">{{ stock.id }}</td>
+                        <td class="px-4 py-2">{{ stock.unit.name }}</td>
+                        <td class="px-4 py-2">{{ stock.quantity }}</td>
+                        <td class="px-4 py-2">
+                            {{ stock.createdAt ? stock.createdAt|date('Y-m-d') : '-' }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="px-4 py-6 text-center text-gray-400">
+                            No stock records found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

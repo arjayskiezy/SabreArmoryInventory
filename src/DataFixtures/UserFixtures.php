@@ -30,9 +30,7 @@ class UserFixtures extends Fixture
             $hashedPassword = $this->passwordHasher->hashPassword($user, 'password');
             $user->setPassword($hashedPassword);
 
-            // timestamps
-            $user->setCreatedAt(new \DateTimeImmutable());
-            $user->setUpdatedAt(new \DateTimeImmutable());
+
 
             $manager->persist($user);
         }
@@ -45,8 +43,6 @@ class UserFixtures extends Fixture
         $demo->setPassword(
             $this->passwordHasher->hashPassword($demo, 'userpass123')
         );
-        $demo->setCreatedAt(new \DateTimeImmutable());
-        $demo->setUpdatedAt(new \DateTimeImmutable());
         $manager->persist($demo); // <-- persist the demo user
 
         // Admin account
@@ -57,8 +53,6 @@ class UserFixtures extends Fixture
         $admin->setPassword(
             $this->passwordHasher->hashPassword($admin, 'adminpass123')
         );
-        $admin->setCreatedAt(new \DateTimeImmutable());
-        $admin->setUpdatedAt(new \DateTimeImmutable()); // <-- fixed: set on $admin, not $user
         $manager->persist($admin);
 
         $manager->flush();
