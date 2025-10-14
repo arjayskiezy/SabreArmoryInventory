@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UnitInstance{% endblock %}
+
+{% block body %}
+    <h1>UnitInstance</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ unit_instance.id }}</td>
+            </tr>
+            <tr>
+                <th>SerialNumber</th>
+                <td>{{ unit_instance.serialNumber }}</td>
+            </tr>
+            <tr>
+                <th>PurchasedDate</th>
+                <td>{{ unit_instance.purchasedDate ? unit_instance.purchasedDate|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ unit_instance.status }}</td>
+            </tr>
+            <tr>
+                <th>ItemStatus</th>
+                <td>{{ unit_instance.itemStatus }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_unit_instance_index') }}">back to list</a>
+
+    <a href="{{ path('app_unit_instance_edit', {'id': unit_instance.id}) }}">edit</a>
+
+{% endblock %}

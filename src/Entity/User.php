@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -40,6 +42,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'datetime_immutable')]
     private ?\DateTimeImmutable $updated_at = null;
+
+    /**
+     * @var Collection<int, UnitInstance>
+     */
+    #[ORM\OneToMany(
+        targetEntity: UnitInstance::class,
+        mappedBy: 'owner',
+        cascade: ['remove'],
+        orphanRemoval: true
+    )]
+    private Collection $unitInstances;
+
+    public function __construct()
+    {
+        $this->unitInstances = new ArrayCollection();
+    }
 
     // ------------------- GETTERS & SETTERS -------------------
 
@@ -91,7 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __serialize(): array
     {
         $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+        $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
         return $data;
     }
 
@@ -146,5 +164,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function onPreUpdate(): void
     {
         $this->updated_at = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return Collection<int, UnitInstance>
+     */
+    public function getUnitInstances(): Collection
+    {
+        return $this->unitInstances;
+    }
+
+    public function addUnitInstance(UnitInstance $unitInstance): static
+    {
+        if (!$this->unitInstances->contains($unitInstance)) {
+            $this->unitInstances->add($unitInstance);
+            $unitInstance->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUnitInstance(UnitInstance $unitInstance): static
+    {
+        if ($this->unitInstances->removeElement($unitInstance)) {
+            // set the owning side to null (unless already changed)
+            if ($unitInstance->getOwner() === $this) {
+                $unitInstance->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }

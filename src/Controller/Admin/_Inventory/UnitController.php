@@ -21,7 +21,6 @@ final class UnitController extends AbstractController
         return $this->render('UserPage/Admin/views/inventory/_inventory.html.twig', [
             'units' => $unitRepository->findAll(),
             'stocks' => $stockRepository->findAll(),
-            'focus' => $request->query->get('focus', null),
         ]);
     }
 
@@ -36,23 +35,31 @@ final class UnitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image_path')->getData();
+            try {
+                $imageFile = $form->get('image_path')->getData();
 
-            if ($imageFile) {
-                $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $unit->getName());
-                $extension = $imageFile->guessExtension() ?: 'png';
-                $newFilename = $safeFilename . '.' . $extension;
+                if ($imageFile) {
+                    $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $unit->getName());
+                    $extension = $imageFile->guessExtension() ?: 'png';
+                    $newFilename = $safeFilename . '.' . $extension;
 
-                $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/uploads';
-                $imageFile->move($uploadsDir, $newFilename);
+                    $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                    if (!is_dir($uploadsDir)) {
+                        mkdir($uploadsDir, 0755, true);
+                    }
 
-                $unit->setImagePath($newFilename);
+                    $imageFile->move($uploadsDir, $newFilename);
+                    $unit->setImagePath($newFilename);
+                }
+
+                $entityManager->persist($unit);
+                $entityManager->flush();
+
+                $this->addFlash('Success', 'Unit created successfully.');
+                return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('Error', 'An error occurred while creating the unit: ' . $e->getMessage());
             }
-
-            $entityManager->persist($unit);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('UserPage/Admin/forms/unit/new.html.twig', [
@@ -60,7 +67,6 @@ final class UnitController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
 
     #[Route('/{id}', name: 'app_unit_show', methods: ['GET'])]
     public function show(Unit $unit): Response
@@ -81,26 +87,30 @@ final class UnitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image_path')->getData();
+            try {
+                $imageFile = $form->get('image_path')->getData();
 
-            if ($imageFile) {
-                $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $unit->getName());
-                $extension = $imageFile->guessExtension() ?: 'png';
-                $newFilename = $safeFilename . '.' . $extension;
+                if ($imageFile) {
+                    $safeFilename = preg_replace('/[^a-zA-Z0-9_-]/', '_', $unit->getName());
+                    $extension = $imageFile->guessExtension() ?: 'png';
+                    $newFilename = $safeFilename . '.' . $extension;
 
-                $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/uploads';
-                if (!is_dir($uploadsDir)) {
-                    mkdir($uploadsDir, 0755, true);
+                    $uploadsDir = $this->getParameter('kernel.project_dir') . '/public/uploads';
+                    if (!is_dir($uploadsDir)) {
+                        mkdir($uploadsDir, 0755, true);
+                    }
+
+                    $imageFile->move($uploadsDir, $newFilename);
+                    $unit->setImagePath($newFilename);
                 }
 
-                $imageFile->move($uploadsDir, $newFilename);
+                $entityManager->flush();
 
-                $unit->setImagePath($newFilename);
+                $this->addFlash('Success', 'Unit updated successfully.');
+                return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('Error', 'An error occurred while updating the unit: ' . $e->getMessage());
             }
-
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('UserPage/Admin/forms/unit/edit.html.twig', [
@@ -113,10 +123,17 @@ final class UnitController extends AbstractController
     public function delete(Request $request, Unit $unit, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $unit->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($unit);
-            $entityManager->flush();
+            try {
+                $entityManager->remove($unit);
+                $entityManager->flush();
+                $this->addFlash('Success', 'Unit deleted successfully.');
+            } catch (\Exception $e) {
+                $this->addFlash('Error', 'An error occurred while deleting the unit: ' . $e->getMessage());
+            }
+        } else {
+            $this->addFlash('Error', 'Invalid CSRF token.');
         }
 
-        return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_unit_index');
     }
 }

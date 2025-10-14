@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UnitInstance index{% endblock %}
+
+{% block body %}
+    <h1>UnitInstance index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>SerialNumber</th>
+                <th>PurchasedDate</th>
+                <th>Status</th>
+                <th>ItemStatus</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for unit_instance in unit_instances %}
+            <tr>
+                <td>{{ unit_instance.id }}</td>
+                <td>{{ unit_instance.serialNumber }}</td>
+                <td>{{ unit_instance.purchasedDate ? unit_instance.purchasedDate|date('Y-m-d') : '' }}</td>
+                <td>{{ unit_instance.status }}</td>
+                <td>{{ unit_instance.itemStatus }}</td>
+                <td>
+                    <a href="{{ path('app_unit_instance_edit', {'id': unit_instance.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

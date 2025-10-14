@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UnitRepository;
+use App\Entity\Stock;
+use App\Entity\UnitInstance;
+use App\Entity\UnitType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -42,12 +45,19 @@ class Unit
     /**
      * @var Collection<int, Stock>
      */
-    #[ORM\OneToMany(targetEntity: Stock::class, mappedBy: 'unit', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: Stock::class, mappedBy: 'unit', cascade: ['remove'], orphanRemoval: true)]
     private Collection $stock;
+
+    /**
+     * @var Collection<int, UnitInstance>
+     */
+    #[ORM\OneToMany(targetEntity: UnitInstance::class, mappedBy: 'weaponType', cascade: ['remove'], orphanRemoval: true)]
+    private Collection $unitInstances;
 
     public function __construct()
     {
         $this->stock = new ArrayCollection();
+        $this->unitInstances = new ArrayCollection();
     }
 
     // ------------------------
@@ -124,6 +134,10 @@ class Unit
         return $this->updated_at;
     }
 
+    // ------------------------
+    // Stock methods
+    // ------------------------
+
     /**
      * @return Collection<int, Stock>
      */
@@ -146,6 +160,37 @@ class Unit
         if ($this->stock->removeElement($stock)) {
             if ($stock->getUnit() === $this) {
                 $stock->setUnit(null);
+            }
+        }
+        return $this;
+    }
+
+    // ------------------------
+    // UnitInstance methods
+    // ------------------------
+
+    /**
+     * @return Collection<int, UnitInstance>
+     */
+    public function getUnitInstances(): Collection
+    {
+        return $this->unitInstances;
+    }
+
+    public function addUnitInstance(UnitInstance $unitInstance): static
+    {
+        if (!$this->unitInstances->contains($unitInstance)) {
+            $this->unitInstances->add($unitInstance);
+            $unitInstance->setWeaponType($this);
+        }
+        return $this;
+    }
+
+    public function removeUnitInstance(UnitInstance $unitInstance): static
+    {
+        if ($this->unitInstances->removeElement($unitInstance)) {
+            if ($unitInstance->getWeaponType() === $this) {
+                $unitInstance->setWeaponType(null);
             }
         }
         return $this;

@@ -4,28 +4,27 @@
         <table class="min-w-full divide-y divide-gray-200 text-sm">
             <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
                 <tr>
-                    <th class="px-4 py-2 text-left">Stock ID</th>
                     <th class="px-4 py-2 text-left">Unit</th>
                     <th class="px-4 py-2 text-left">Quantity</th>
                     <th class="px-4 py-2 text-left">Created At</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-                {% for stock in stocks %}
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-2">{{ stock.id }}</td>
-                        <td class="px-4 py-2">{{ stock.unit.name }}</td>
-                        <td class="px-4 py-2">{{ stock.quantity }}</td>
-                        <td class="px-4 py-2">
-                            {{ stock.createdAt ? stock.createdAt|date('Y-m-d') : '-' }}
-                        </td>
-                    </tr>
+                {% for i in 0..(stocks|length - 1) %} {% set stock =
+                stocks[stocks|length - 1 - i] %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-4 py-2">{{ stock.unit.name }}</td>
+                    <td class="px-4 py-2">{{ stock.quantity }}</td>
+                    <td class="px-4 py-2">
+                        {{ stock.createdAt ? stock.createdAt|date('Y-m-d') : '-' }}
+                    </td>
+                </tr>
                 {% else %}
-                    <tr>
-                        <td colspan="4" class="px-4 py-6 text-center text-gray-400">
-                            No stock records found.
-                        </td>
-                    </tr>
+                <tr>
+                    <td colspan="4" class="px-4 py-6 text-center text-gray-400">
+                        No stock records found.
+                    </td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>

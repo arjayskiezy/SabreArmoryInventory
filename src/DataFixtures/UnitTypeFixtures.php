@@ -11,11 +11,11 @@ class UnitTypeFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $types = [
-            101 => ['name' => 'Rifle', 'quantity' => 50],
-            102 => ['name' => 'Sniper', 'quantity' => 20],
-            103 => ['name' => 'Machine Gun', 'quantity' => 10],
-            104 => ['name' => 'Pistol', 'quantity' => 100],
-            105 => ['name' => 'Shotgun', 'quantity' => 30],
+            101 => ['name' => 'Rifle',],
+            102 => ['name' => 'Sniper',],
+            103 => ['name' => 'Machine Gun',],
+            104 => ['name' => 'Pistol',],
+            105 => ['name' => 'Shotgun',],
         ];
 
         foreach ($types as $id => $data) {

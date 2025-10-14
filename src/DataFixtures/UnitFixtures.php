@@ -13,98 +13,129 @@ class UnitFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $unitsData = [
+            // Type 101: Rifles
             [
-                'name' => 'Assault Rifle',
-                'description' => 'High rate of fire rifle, suitable for medium-range combat.',
+                'name' => 'M4A1',
+                'description' => 'Standard issue assault rifle, highly versatile.',
                 'price' => 1500,
-                'image_path' => 'images/assault_rifle.jpg',
+                'image_path' => 'images/m4a1.jpg',
                 'type' => 101,
             ],
             [
-                'name' => 'Sniper Rifle',
-                'description' => 'Long-range rifle with high accuracy.',
-                'price' => 3000,
-                'image_path' => 'images/sniper_rifle.jpg',
-                'type' => 102,
-            ],
-            [
-                'name' => 'Pistol',
-                'description' => 'Compact sidearm for close-quarters.',
-                'price' => 500,
-                'image_path' => 'images/pistol.jpg',
-                'type' => 104,
-            ],
-            [
-                'name' => 'Submachine Gun',
-                'description' => 'Light automatic firearm effective for short to medium range.',
-                'price' => 1200,
-                'image_path' => 'images/submachine_gun.jpg',
-                'type' => 101,
-            ],
-            [
-                'name' => 'Shotgun',
-                'description' => 'High-damage close-range weapon ideal for breaching.',
-                'price' => 1000,
-                'image_path' => 'images/shotgun.jpg',
-                'type' => 104,
-            ],
-            [
-                'name' => 'Light Machine Gun',
-                'description' => 'Heavy automatic weapon designed for sustained fire.',
-                'price' => 2500,
-                'image_path' => 'images/light_machine_gun.jpg',
-                'type' => 101,
-            ],
-            [
-                'name' => 'Carbine',
-                'description' => 'Compact rifle variant with balanced accuracy and handling.',
-                'price' => 1400,
-                'image_path' => 'images/carbine.jpg',
-                'type' => 101,
-            ],
-            [
-                'name' => 'Designated Marksman Rifle',
-                'description' => 'Semi-automatic rifle optimized for precision at mid to long range.',
-                'price' => 2200,
-                'image_path' => 'images/dmr.jpg',
-                'type' => 102,
-            ],
-            [
-                'name' => 'Rocket Launcher',
-                'description' => 'Anti-vehicle weapon capable of dealing explosive damage.',
-                'price' => 5000,
-                'image_path' => 'images/rocket_launcher.jpg',
-                'type' => 103,
-            ],
-            [
-                'name' => 'Grenade Launcher',
-                'description' => 'Projectile weapon that launches explosive grenades for area damage.',
-                'price' => 3500,
-                'image_path' => 'images/grenade_launcher.jpg',
-                'type' => 103,
-            ],
-            [
-                'name' => 'Combat Knife',
-                'description' => 'Close-quarters melee weapon, lightweight and silent.',
-                'price' => 200,
-                'image_path' => 'images/combat_knife.jpg',
-                'type' => 104,
-            ],
-            [
-                'name' => 'Tactical Shield',
-                'description' => 'Provides protection against small arms fire during assaults.',
+                'name' => 'HK416',
+                'description' => 'High-performance assault rifle by Heckler & Koch.',
                 'price' => 1800,
-                'image_path' => 'images/tactical_shield.jpg',
+                'image_path' => 'images/hk416.jpg',
+                'type' => 101,
+            ],
+            [
+                'name' => 'MK18',
+                'description' => 'Compact variant of the M4 for close-quarter battles.',
+                'price' => 1600,
+                'image_path' => 'images/mk18.jpg',
+                'type' => 101,
+            ],
+            [
+                'name' => 'AK-47',
+                'description' => 'Classic automatic rifle known for reliability.',
+                'price' => 1400,
+                'image_path' => 'images/ak47.jpg',
+                'type' => 101,
+            ],
+
+            // Type 102: Snipers
+            [
+                'name' => 'M24',
+                'description' => 'Bolt-action sniper rifle, used for long-range precision.',
+                'price' => 3000,
+                'image_path' => 'images/m24.jpg',
+                'type' => 102,
+            ],
+            [
+                'name' => 'AWP',
+                'description' => 'High-caliber sniper rifle for extreme range.',
+                'price' => 3500,
+                'image_path' => 'images/awp.jpg',
+                'type' => 102,
+            ],
+            [
+                'name' => 'Barrett M82',
+                'description' => 'Anti-material sniper rifle with explosive rounds.',
+                'price' => 5000,
+                'image_path' => 'images/barrett_m82.jpg',
+                'type' => 102,
+            ],
+
+            // Type 103: Machine Guns
+            [
+                'name' => 'M249 SAW',
+                'description' => 'Light machine gun for sustained fire support.',
+                'price' => 2500,
+                'image_path' => 'images/m249_saw.jpg',
+                'type' => 103,
+            ],
+            [
+                'name' => 'PKM',
+                'description' => 'Soviet-designed general-purpose machine gun.',
+                'price' => 2700,
+                'image_path' => 'images/pkm.jpg',
+                'type' => 103,
+            ],
+            [
+                'name' => 'FN MAG',
+                'description' => 'Reliable machine gun for infantry and vehicle support.',
+                'price' => 3000,
+                'image_path' => 'images/fn_mag.jpg',
+                'type' => 103,
+            ],
+
+            // Type 104: Pistols
+            [
+                'name' => 'Glock 17',
+                'description' => 'Popular semi-automatic pistol, reliable and easy to use.',
+                'price' => 500,
+                'image_path' => 'images/glock17.jpg',
+                'type' => 104,
+            ],
+            [
+                'name' => 'Beretta 92FS',
+                'description' => 'Classic sidearm used by military forces worldwide.',
+                'price' => 550,
+                'image_path' => 'images/beretta92fs.jpg',
+                'type' => 104,
+            ],
+            [
+                'name' => 'Sig Sauer P226',
+                'description' => 'Durable and accurate pistol for professional use.',
+                'price' => 600,
+                'image_path' => 'images/sig_p226.jpg',
+                'type' => 104,
+            ],
+
+            // Type 105: Shotguns
+            [
+                'name' => 'Remington 870',
+                'description' => 'Pump-action shotgun used for close-range combat.',
+                'price' => 900,
+                'image_path' => 'images/remington870.jpg',
                 'type' => 105,
             ],
             [
-                'name' => 'Flamethrower',
-                'description' => 'Short-range incendiary weapon designed for area suppression.',
-                'price' => 4000,
-                'image_path' => 'images/flamethrower.jpg',
-                'type' => 103,
+                'name' => 'Mossberg 500',
+                'description' => 'Reliable pump-action shotgun for tactical operations.',
+                'price' => 850,
+                'image_path' => 'images/mossberg500.jpg',
+                'type' => 105,
+            ],
+            [
+                'name' => 'Benelli M4',
+                'description' => 'Semi-automatic combat shotgun for military use.',
+                'price' => 1200,
+                'image_path' => 'images/benelli_m4.jpg',
+                'type' => 105,
             ],
         ];
+
 
         foreach ($unitsData as $data) {
             $unitType = $manager->getRepository(UnitType::class)->find($data['type']);
@@ -114,10 +145,10 @@ class UnitFixtures extends Fixture implements DependentFixtureInterface
 
             $unit = new Unit();
             $unit->setName($data['name'])
-                 ->setDescription($data['description'])
-                 ->setPrice($data['price'])
-                 ->setImagePath($data['image_path'])
-                 ->setType($unitType);
+                ->setDescription($data['description'])
+                ->setPrice($data['price'])
+                ->setImagePath($data['image_path'])
+                ->setType($unitType);
 
             $manager->persist($unit);
         }

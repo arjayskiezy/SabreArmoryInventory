@@ -205,10 +205,13 @@ Management {% endblock %} {% block admin_content %}
                                         )
                                     }}
                                 </td>
+                                <tr
                             </tr>
-                            {% endfor %}
-                            {% else %}
-                            <tr>
+                            {% endfor %} {% else %}
+                            <tr
+                                x-show="visibleCount === 0"
+                                x-transition.opacity.duration.300ms
+                            >
                                 <td
                                     colspan="6"
                                     class="px-4 py-6 text-center text-gray-400"
@@ -220,7 +223,6 @@ Management {% endblock %} {% block admin_content %}
                         </tbody>
                     </table>
                 </div>
-
                 <!-- Modal -->
                 {% include 'UserPage/Admin/modals/_openModal.html.twig' %}
             </section>
