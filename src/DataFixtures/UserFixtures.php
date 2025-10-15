@@ -43,16 +43,6 @@ class UserFixtures extends Fixture
             // Hash password
             $user->setPassword($this->passwordHasher->hashPassword($user, 'password'));
 
-            // Optional: assign some UnitInstances
-            $unitCount = rand(1, 3);
-            for ($j = 0; $j < $unitCount; $j++) {
-                $unit = new UnitInstance();
-                $unit->setOwner($user);
-                $unit->setSerialNumber($faker->unique()->bothify('SN-####-??'));
-                $manager->persist($unit);
-                $user->addUnitInstance($unit);
-            }
-
             $manager->persist($user);
         }
 

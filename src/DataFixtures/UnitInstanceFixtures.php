@@ -29,30 +29,25 @@ class UnitInstanceFixtures extends Fixture implements DependentFixtureInterface
             throw new \Exception("No User entities found. Make sure UserFixtures ran first.");
         }
 
-        // Create 20 UnitInstances
         for ($i = 0; $i < 20; $i++) {
             $unitInstance = new UnitInstance();
-
-            // Randomly pick a Unit and a User
             $unitInstance->setWeaponType($faker->randomElement($units));
             $unitInstance->setOwner($faker->randomElement($users));
+            $unitInstance->setSerialNumber(strtoupper($faker->unique()->bothify('SN-####-??')));
 
-            // Serial number: 10-character alphanumeric
-            $unitInstance->setSerialNumber(strtoupper($faker->bothify('??###??###')));
+            // Random purchased date OR "Not Yet Purchased"
+            if ($faker->boolean(80)) { // 80% chance purchased
+                $unitInstance->setPurchasedDate(
+                    \DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-5 years', 'now'))
+                );
+            }
 
-            // Random purchased date within last 5 years
-            $unitInstance->setPurchasedDate(
-                \DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-5 years', 'now'))
-            );
-
-            // Random status
             $unitInstance->setStatus($faker->randomElement([
                 UnitStatus::ACTIVE,
                 UnitStatus::DAMAGED,
                 UnitStatus::RETIRED,
             ]));
 
-            // Random itemStatus
             $unitInstance->setItemStatus($faker->randomElement([
                 ItemStatus::GOOD,
                 ItemStatus::MAINTENANCE,
