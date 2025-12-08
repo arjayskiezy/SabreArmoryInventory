@@ -8,12 +8,11 @@ security:
             # https://symfony.com/doc/current/security.html#computing-the-hash-of-a-password
             # migrate_from: 'plaintext' # uncomment this line to migrate from plaintext passwords
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
                 class: App\Entity\User
                 property: email
-        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -21,22 +20,20 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            form_login:
-                login_path: app_login
-                check_path: app_login
-                username_parameter: _username
-                password_parameter: _password
-                enable_csrf: false          
-                csrf_token_id: authenticate 
-                success_handler: App\Security\LoginSuccessHandler
-            remember_me:
-                secret: "%kernel.secret%"
-                lifetime: 604800
-                path: /
-                always_remember_me: false
+            custom_authenticator: App\Security\UserAuthenticator
+            access_denied_handler: App\RouteHandler\AccessDeniedHandler
             logout:
                 path: app_logout
-                target: app_login
+                # where to redirect after logout
+                # target: app_any_route
+
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                # by default, the feature is enabled by checking a checkbox in the
+                # login form, uncomment the following line to always enable it.
+                #always_remember_me: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -44,11 +41,11 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
-    # Easy way to control access for large sections of your site
+    # Easy way to control access for large sections of 081922your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/admin, roles: [ ROLE_ADMIN, ROLE_STAFF ] }
+        - { path: ^/user, roles: ROLE_CUSTOMER }
 
 when@test:
     security:

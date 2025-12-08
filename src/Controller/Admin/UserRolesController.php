@@ -14,10 +14,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[Route('/user/roles')]
+#[Route('/admin')]
 final class UserRolesController extends AbstractController
 {
-    #[Route(name: 'app_user_roles_index', methods: ['GET'])]
+    #[Route('/user/roles', name: 'app_user_roles_index', methods: ['GET'])]
     public function index(
         UserRepository $userRepository,
         PaginatorInterface $paginator,
@@ -27,8 +27,7 @@ final class UserRolesController extends AbstractController
 
         $users = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1),
-            9
+            $request->query->getInt('page', 1)
         );
 
         return $this->render('UserPage/Admin/views/userRoles/_userRoles.html.twig', [
@@ -36,9 +35,12 @@ final class UserRolesController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_user_roles_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    #[Route('/user/roles/new', name: 'app_user_roles_new', methods: ['GET', 'POST'])]
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response {
         $user = new User();
         $form = $this->createForm(UserType::class, $user, [
             'action' => $this->generateUrl('app_user_roles_new'),
@@ -47,6 +49,16 @@ final class UserRolesController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $plainPassword = $form->get('plainPassword')->getData();
+            if ($plainPassword) {
+                $hashed = $passwordHasher->hashPassword($user, $plainPassword);
+                $user->setPassword($hashed);
+            } else {
+                $this->addFlash('Error', 'Password is required for new users.');
+                return $this->redirectToRoute('app_user_roles_new');
+            }
+
             try {
                 $entityManager->persist($user);
                 $entityManager->flush();
@@ -67,7 +79,7 @@ final class UserRolesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_roles_show', methods: ['GET'])]
+    #[Route('/user/roles/{id}', name: 'app_user_roles_show', methods: ['GET'])]
     public function show(User $user): Response
     {
         return $this->render('UserPage/Admin/forms/user_roles/show.html.twig', [
@@ -75,7 +87,7 @@ final class UserRolesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_user_roles_edit', methods: ['GET', 'POST'])]
+    #[Route('/user/roles/{id}/edit', name: 'app_user_roles_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(UserType::class, $user, [
@@ -111,7 +123,7 @@ final class UserRolesController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_roles_delete', methods: ['POST'])]
+    #[Route('/user/roles/{id}', name: 'app_user_roles_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
         $token = $request->request->get('_token');

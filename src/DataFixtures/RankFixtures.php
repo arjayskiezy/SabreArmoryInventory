@@ -32,7 +32,7 @@ class RankFixtures extends Fixture
                 ->setAbbreviation($r['abbr'])
                 ->setBranch($r['branch'])
                 ->setCategory($r['category'])
-                ->setDesciption($r['desc'])
+                ->setDescription($r['desc'])
                 ->setCreatedAt(new \DateTimeImmutable());
 
             $manager->persist($rank);

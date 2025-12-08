@@ -1,0 +1,50 @@
+<div x-data="{ open: false }" class="inline-block">
+
+    <!-- Delete Button -->
+    <button
+        @click="open = true"
+        class="btn bg-red-600 text-white hover:bg-red-700 rounded transition-all duration-150 px-4 py-2"
+        title="Delete Stock"
+    >
+        Delete
+    </button>
+
+    <!-- Modal -->
+    <div
+        x-show="open"
+        x-transition
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+        <div
+            @click.away="open = false"
+            class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6"
+        >
+            <h2 class="text-lg font-semibold mb-4">Confirm Deletion</h2>
+            <p class="mb-6 text-gray-600">
+                Are you sure you want to delete <strong>{{ stock.name }}</strong>? This action cannot be undone.
+            </p>
+
+            <div class="flex justify-end space-x-3">
+                <button
+                    @click="open = false"
+                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                >
+                    Cancel
+                </button>
+
+                <form
+                    method="post"
+                    action="{{ path('app_stock_delete', {'id': stock.id}) }}"
+                >
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stock.id) }}">
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+                    >
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

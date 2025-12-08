@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+#[Route('/admin')]
 final class InventoryController extends AbstractController
 {
     #[Route('/inventory', name: 'app_inventory')]

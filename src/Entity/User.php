@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\UserActiveStatus;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -54,12 +55,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     )]
     private Collection $unitInstances;
 
+    #[ORM\Column(enumType: UserActiveStatus::class)]
+    private ?UserActiveStatus $status = null;
+
     public function __construct()
     {
         $this->unitInstances = new ArrayCollection();
     }
 
-    // ------------------- GETTERS & SETTERS -------------------
 
     public function getId(): ?int
     {
@@ -151,7 +154,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->updated_at;
     }
 
-    // ------------------- LIFECYCLE CALLBACKS -------------------
 
     #[ORM\PrePersist]
     public function onPrePersist(): void
@@ -192,6 +194,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $unitInstance->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatus(): ?UserActiveStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(UserActiveStatus $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

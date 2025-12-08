@@ -47,17 +47,6 @@ services:
         networks:
             - symfony_net
 
-    # Mailpit
-    mailer:
-        image: axllent/mailpit
-        container_name: webapp-mailer
-        restart: always
-        ports:
-            - "1025:1025"
-            - "8025:8025"
-        networks:
-            - symfony_net
-
 volumes:
     webapp_mysql_data:
 

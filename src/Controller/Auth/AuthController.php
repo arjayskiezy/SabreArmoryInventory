@@ -2,7 +2,7 @@
 
 namespace App\Controller\Auth;
 
-use App\Repository\RankRepository;
+use App\Form\UserSignupType;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +17,7 @@ final class AuthController extends AbstractController
     #[Route('/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
@@ -34,40 +35,31 @@ final class AuthController extends AbstractController
     }
 
     #[Route('/signup', name: 'app_signup')]
-    public function signup(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em, RankRepository $rankRepository): Response
+    public function signup(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em)
     {
-        if ($request->isMethod('POST')) {
-            $full_name = $request->request->get('full_name');
-            $email = $request->request->get('email');
-            $password = $request->request->get('password');
-            $confirm_password = $request->request->get('confirm_password');
-            $user_rank = $request->request->get('user_rank');
+        $user = new User();
+        $form = $this->createForm(UserSignupType::class, $user);
 
-            if ($password !== $confirm_password) {
-                $this->addFlash('Error', 'Passwords do not match!');
-                return $this->redirectToRoute('app_signup');
-            }
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $password = $form->get('password')->getData();
+            $confirm = $form->get('confirmPassword')->getData();
+            $email = $form->get('email')->getData();
 
             $existingUser = $em->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($existingUser) {
-                $this->addFlash('Error', 'Email already registered!');
+                $this->addFlash('error', 'Email already registered!');
                 return $this->redirectToRoute('app_signup');
             }
 
-            $user = new User();
-            $user->setFullName($full_name);
-            $user->setEmail($email);
-            $user->setRoles(['ROLE_USER']);
-            $rankId = $request->request->get('user_rank');
-            $user_rank = $rankRepository->find($rankId);   
-
-            if (!$user_rank) {
-                $this->addFlash('error', 'Invalid rank selected.');
+            if ($password !== $confirm) {
+                $this->addFlash('error', 'Passwords do not match!');
                 return $this->redirectToRoute('app_signup');
             }
 
-            // assign the object to the user
-            $user->setUserRank($user_rank);
+            $user->setRoles(['ROLE_USER', 'ROLE_CUSTOMER']);
 
             $hashedPassword = $passwordHasher->hashPassword($user, $password);
             $user->setPassword($hashedPassword);
@@ -75,11 +67,13 @@ final class AuthController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('Success', 'Account created successfully! You can now login.');
+            $this->addFlash('success', 'Account created successfully! You can now login.');
             return $this->redirectToRoute('app_login');
         }
-        $ranks = $rankRepository->findAll();
-        return $this->render('Auth/signup/signup.html.twig', ['ranks' => $ranks,]);
+
+        return $this->render('Auth/signup/signup.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     #[Route('/forgotPassword', name: 'app_forgot_password')]

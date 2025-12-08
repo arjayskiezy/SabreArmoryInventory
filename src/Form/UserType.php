@@ -33,15 +33,16 @@ class UserType extends AbstractType
             ])
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                    'User' => 'ROLE_USER',
+                    'Customer' => 'ROLE_CUSTOMER',
                     'Admin' => 'ROLE_ADMIN',
+                    'Staff' => 'ROLE_STAFF',
                 ],
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'Roles',
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
-                'attr' => ['class' => 'space-x-3 text-sm text-gray-700'],
+                'attr' => ['class' => 'space-x-3 text-sm text-gray-700 mt-2'],
             ])
             ->add('full_name', TextType::class, [
                 'attr' => ['class' => $inputClasses, 'placeholder' => 'Enter full name'],
@@ -57,12 +58,13 @@ class UserType extends AbstractType
                 'row_attr' => ['class' => $wrapperClasses],
                 'attr' => [
                     'class' => $inputClasses,
-                    'placeholder' => 'Leave blank to keep current password'
+                    'placeholder' => 'Enter Password'
                 ],
             ])
             ->add('user_rank', EntityType::class, [
                 'class' => Rank::class,
                 'choice_label' => 'name',
+                'required' => false,
                 'placeholder' => 'Select user rank',
                 'label' => 'User Rank',
                 'attr' => ['class' => $inputClasses],

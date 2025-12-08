@@ -64,9 +64,9 @@ endblock %} {% block admin_content %}
                 class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
             >
                 <option value="">All</option>
+                <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
-                <option value="user">User</option>
-                <option value="officer">Officer</option>
+                <option value="officer">Staff</option>
             </select>
 
             <button
@@ -154,7 +154,7 @@ endblock %} {% block admin_content %}
                 </tr>
                 {% endfor %}
 
-                <!-- Dynamic Empty Message -->
+                {# <!-- Dynamic Empty Message -->
                 <tr
                     x-show="visibleCount === 0"
                     x-transition.opacity.duration.300ms
@@ -173,7 +173,7 @@ endblock %} {% block admin_content %}
                             <span>See Next Page if Available</span>
                         </template>
                     </td>
-                </tr>
+                </tr> #}
                 {% else %}
                 <tr>
                     <td colspan="7" class="px-4 py-6 text-center text-gray-400">
@@ -185,11 +185,11 @@ endblock %} {% block admin_content %}
         </table>
     </div>
 
-    {% if users is defined and users|length > 0 %}
+    {# {% if users is defined and users|length > 0 %}
     <div class="flex justify-center mt-4">
         {{ knp_pagination_render(users) }}
     </div>
-    {% endif %}
+    {% endif %} #}
 
     <!-- Modal -->
     {% include 'UserPage/Admin/modals/_openModal.html.twig' %}

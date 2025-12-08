@@ -13,11 +13,10 @@
         {% endblock %}
     </head>
     <body x-data="dashboard()">
-        {% include './UserPage/Admin/alert/alert.html.twig' %} {% block body %}{%
+         {% block body %}{%
         endblock %} {% block javascripts %}
         {{ encore_entry_script_tags("app") }}
 
-        <!-- Optional: place Alpine modal directive here if needed -->
         <script>
             document.addEventListener("alpine:init", () => {
                 Alpine.directive("modal", (el) => {

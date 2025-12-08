@@ -30,7 +30,7 @@ class Rank
     private ?UserStatus $category = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $desciption = null;
+    private ?string $description = null;
 
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $created_at = null;
@@ -99,14 +99,14 @@ class Rank
         return $this;
     }
 
-    public function getDesciption(): ?string
+    public function getDescription(): ?string
     {
-        return $this->desciption;
+        return $this->description;
     }
 
-    public function setDesciption(string $desciption): static
+    public function setDescription(string $description): static
     {
-        $this->desciption = $desciption;
+        $this->description = $description;
 
         return $this;
     }

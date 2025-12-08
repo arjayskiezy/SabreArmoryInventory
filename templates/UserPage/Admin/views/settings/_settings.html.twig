@@ -1,21 +1,85 @@
-{% extends 'UserPage/Admin/index.html.twig' %} {% block title %}System Settings{% endblock %} {% block admin_content %}<h2 class="text-xl font-semibold mb-3">System Settings</h2>
-    <div class="bg-white rounded-xl shadow p-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <label class="text-sm text-gray-600">Low ammo threshold</label>
-                <input
-                    type="number"
-                    class="mt-1 px-3 py-2 border rounded-xl w-full border border-gray-200"
-                    placeholder="e.g. 20"
-                />
-            </div>
-            <div>
-                <label class="text-sm text-gray-600">WebSocket URL</label>
-                <input
-                    type="text"
-                    class="mt-1 px-3 py-2 border rounded-xl w-full border border-gray-200" 
-                    placeholder="wss://..."
-                />
-            </div>
-        </div>
-    </div> {% endblock %}
+{% extends 'UserPage/Admin/index.html.twig' %}
+
+{% block title %}User Settings
+{% endblock %}
+
+{% block admin_content %}
+	<div>
+		<h2 class="text-xl font-semibold">Account Settings</h2>
+		<p class="text-sm text-gray-500">
+			Edit your profile here
+		</p>
+	</div>
+	<div
+		class="flex flex-col md:flex-row gap-6">
+
+		{# --- Profile/Account Information (Left Column) --- #}
+		<div class="flex-1 bg-white rounded-xl shadow-lg p-6 md:p-8">
+			<h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+				<svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+				</svg>
+				Account Profile
+			</h3>
+
+			<p class="text-sm text-gray-500 mb-6">
+				This information is visible across the system.
+			</p>
+
+			<div class="space-y-4">
+				<div class="grid grid-cols-3 gap-4 py-2 border-b border-gray-100">
+					<div class="text-sm font-medium text-gray-500">Full Name</div>
+					<div class="col-span-2 text-sm text-gray-900 font-semibold">{{ app.user.getFullName() }}</div>
+				</div>
+				<div class="grid grid-cols-3 gap-4 py-2 border-b border-gray-100">
+					<div class="text-sm font-medium text-gray-500">Email Address</div>
+					<div class="col-span-2 text-sm text-gray-900 font-semibold">{{ app.user.getEmail() }}</div>
+				</div>
+				<div class="grid grid-cols-3 gap-4 py-2">
+					<div class="text-sm font-medium text-gray-500">Role</div>
+					<div class="col-span-2 text-sm text-gray-900 font-semibold">
+						{{ app.user.getRoles()
+                        |filter(role => role != 'ROLE_USER')
+                        |map(role => role|replace({'ROLE_':''}))
+                        |join(', ') }}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{# --- Edit Profile & Password Form (Right Column) --- #}
+		<div class="flex-1 bg-white rounded-xl shadow-lg p-6 md:p-8">
+			<h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+				<svg class="w-6 h-6 mr-2 text-gray-500" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2v5a2 2 0 01-2 2h-2a2 2 0 01-2-2v-5a2 2 0 012-2h2zM7 9H5a2 2 0 00-2 2v5a2 2 0 002 2h2m0-6V7a4 4 0 018 0v2"></path>
+				</svg>
+				Edit Profile & Password
+			</h3>
+
+			<p class="text-sm text-gray-500 mb-1">
+				Update your account information and change your password.
+			</p>
+
+			{{ form_start(form, {'attr': {'class': 'space-y-1'}}) }}
+
+			<div class="grid grid-cols-1 gap-1">
+				<div>{{ form_row(form.fullName) }}</div>
+				<div>{{ form_row(form.email) }}</div>
+				<div>{{ form_row(form.currentPassword) }}</div>
+				<div>{{ form_row(form.newPassword) }}
+				</div>
+				<div>{{ form_row(form.confirmPassword) }}</div>
+			</div>
+
+			<div class="mt-2">
+				<button type="submit" class="bg-primary text-white font-medium py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform hover:scale-105">
+					Update Profile
+				</button>
+			</div>
+
+			{{ form_end(form) }}
+		</div>
+
+	</div>
+
+{% endblock %}

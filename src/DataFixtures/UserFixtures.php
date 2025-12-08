@@ -34,7 +34,7 @@ class UserFixtures extends Fixture
         for ($i = 0; $i < 12; $i++) {
             $user = new User();
             $user->setEmail($faker->unique()->safeEmail);
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles(['ROLE_USER', 'ROLE_CUSTOMER']);
             $user->setFullName($faker->name());
 
             // Assign a random rank
@@ -49,7 +49,7 @@ class UserFixtures extends Fixture
         // Demo user
         $demo = new User();
         $demo->setEmail('user@example.com');
-        $demo->setRoles(['ROLE_USER']);
+        $demo->setRoles(['ROLE_USER', 'ROLE_CUSTOMER']);
         $demo->setFullName('Demo User');
         $demo->setUserRank($ranks[array_rand($ranks)]);
         $demo->setPassword($this->passwordHasher->hashPassword($demo, 'userpass123'));
@@ -58,7 +58,7 @@ class UserFixtures extends Fixture
         // Admin user
         $admin = new User();
         $admin->setEmail('admin@example.com');
-        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setRoles(['ROLE_USER','ROLE_ADMIN']);
         $admin->setFullName('Administrator');
         $admin->setUserRank($ranks[array_rand($ranks)]);
         $admin->setPassword($this->passwordHasher->hashPassword($admin, 'adminpass123'));

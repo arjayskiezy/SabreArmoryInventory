@@ -1,58 +1,55 @@
-{% extends 'base.html.twig' %} {% block title %}Login{% endblock %} {% block
-body %} {% include 'NavBar/landingPageHeader.html.twig' %}
+{% extends 'base.html.twig' %}
+{% block title %}Login{% endblock %}
+
+{% block body %}
+{% include 'NavBar/landingPageHeader.html.twig' %}
 
 <div class="isolate py-42 flex items-center justify-center bg-gray-200 px-4">
     <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
-    <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)" class="relative left-1/2 -z-10 aspect-1155/678 w-144.5 max-w-none -translate-x-1/2 rotate-30 bg-linear-to-tr from-primary to-secondary opacity-20 sm:left-[calc(50%-40rem)] sm:w-288.75"></div>
-  </div>
+        <div style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+            class="relative left-1/2 -z-10 aspect-1155/678 w-144.5 max-w-none -translate-x-1/2 rotate-30 bg-linear-to-tr from-primary to-secondary opacity-20 sm:left-[calc(50%-40rem)] sm:w-288.75">
+        </div>
+    </div>
+
     <div class="max-w-md w-full bg-white shadow-lg rounded-2xl p-8">
         <h2 class="text-3xl font-extrabold text-gray-900 text-center mb-6">
             Sign in to your account
         </h2>
 
         {% if error %}
-        <div style="color: red">
+        <div class="text-red-600 mb-4">
             {{ error.messageKey|trans(error.messageData, 'security') }}
         </div>
         {% endif %}
 
         <form action="{{ path('app_login') }}" method="post" class="space-y-6">
             <div>
-                <label
-                    for="email"
-                    class="block text-sm font-medium text-gray-700"
-                    >Email address</label
-                >
+                <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
                 <input
                     type="email"
-                    name="_username"
+                    name="email"
                     id="email"
                     required
                     autofocus
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:text-sm"
                     value="{{ last_username }}"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 
+                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:text-sm"
                 />
             </div>
 
             <div>
-                <label
-                    for="password"
-                    class="block text-sm font-medium text-gray-700"
-                    >Password</label
-                >
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                 <input
                     type="password"
-                    name="_password"
+                    name="password"
                     id="password"
                     required
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus-ring-primary sm:text-sm"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400
+                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:text-sm"
                 />
             </div>
-            <input
-                type="hidden"
-                name="_csrf_token"
-                value="{{ csrf_token('authenticate') }}"
-            />
+
+            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
@@ -62,43 +59,35 @@ body %} {% include 'NavBar/landingPageHeader.html.twig' %}
                         type="checkbox"
                         class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
                     />
-                    <label
-                        for="remember_me"
-                        class="ml-2 block text-sm text-gray-900"
-                    >
-                        Remember me
-                    </label>
+                    <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
                 </div>
 
                 <div class="text-sm">
-                    <a
-                        href="{{ path('app_forgot_password') }}"
-                        class="font-medium text-primary hover:text-secondary"
-                    >
+                    <a href="{{ path('app_forgot_password') }}"
+                       class="font-medium text-primary hover:text-secondary">
                         Forgot your password?
                     </a>
                 </div>
             </div>
 
-            <div>
-                <button
-                    type="submit"
-                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary font-medium text-sm transition"
-                >
-                    Sign in
-                </button>
-            </div>
+            <button
+                type="submit"
+                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm
+                       text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2
+                       focus:ring-offset-2 focus:ring-primary font-medium text-sm transition"
+            >
+                Sign in
+            </button>
         </form>
 
         <p class="mt-6 text-center text-sm text-gray-600">
             Don't have an account?
-            <a
-                href="{{ path('app_signup') }}"
-                class="font-medium text-primary hover:text-secondary"
-            >
+            <a href="{{ path('app_signup') }}" class="font-medium text-primary hover:text-secondary">
                 Sign up
             </a>
         </p>
     </div>
 </div>
-{% include 'NavBar/landingPageFooter.html.twig' %} {% endblock %}
+
+{% include 'NavBar/landingPageFooter.html.twig' %}
+{% endblock %}
