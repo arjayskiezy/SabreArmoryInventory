@@ -37,6 +37,9 @@ class UnitInstance
     #[ORM\ManyToOne]
     private ?Unit $unitType = null;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -122,6 +125,18 @@ class UnitInstance
     public function setUnitType(?Unit $unitType): static
     {
         $this->unitType = $unitType;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
