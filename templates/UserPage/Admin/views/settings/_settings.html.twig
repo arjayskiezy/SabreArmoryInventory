@@ -88,7 +88,7 @@
 		<div
 			x-data="{ openModal: false, blurForm: true }" class="flex-1 relative">
 			{# Overlay blur effect #}
-			<div :class="blurForm ? 'absolute inset-0 bg-white/70 backdrop-blur-md z-10 flex items-center justify-center' : ''">
+			<div :class="blurForm ? 'absolute inset-0 bg-white/30 backdrop-blur-md z-10 flex items-center justify-center' : ''">
 				<template x-if="blurForm">
 					<button @click="openModal = true" class="font-medium py-2 px-4 rounded-xl shadow-md transition-transform
 						               bg-primary text-white hover:shadow-lg hover:scale-105">

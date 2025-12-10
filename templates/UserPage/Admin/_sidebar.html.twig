@@ -46,7 +46,7 @@
 						</a>
 					{% endif %}
 				{% elseif 'ROLE_STAFF' in roles %}
-					{% if item.label in ['Inventory','Catalog','Settings'] %}
+					{% if item.label in ['Inventory','Catalog','Reports','Settings'] %}
 						<a href="{{ path(item.route) }}" class="group flex items-center gap-4 py-2 px-2 rounded-lg transition {% if currentRoute starts with item.route %} bg-primary text-white border-l-4 border-gray-500 {% else %} hover:bg-gray-100 hover:text-primary text-gray-500 {% endif %}">
 							<svg class="w-6 h-6 transition {% if currentRoute starts with item.route %} text-white {% else %} text-gray-320 group-hover:text-secondary {% endif %}" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24">
 								<path d="{{ item.icon }}" stroke-linecap="round" stroke-linejoin="round"/>
@@ -76,7 +76,7 @@
 				</div>
 				<div>
 					<p class="text-sm font-bold">{{ app.user.getFullName() }}</p>
-					<p class="text-xs font-bold text-gray-100 uppercase">OFFICER</p>
+					<p class="text-xs font-bold text-gray-100 uppercase">Welcome to Sabre</p>
 				</div>
 			</div>
 			<form method="post" action="{{ path('app_logout') }}">

@@ -44,9 +44,11 @@ security:
     # Easy way to control access for large sections of 081922your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        
+        - { path: ^/admin/catalog, roles:  [ ROLE_STAFF, ROLE_ADMIN ] }
+        - { path: ^/admin/inventory, roles:  [ ROLE_STAFF, ROLE_ADMIN ] }
+        - { path: ^/admin/reports, roles:  [ ROLE_STAFF, ROLE_ADMIN ] }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/admin/catalog, roles:  ROLE_STAFF }
-        - { path: ^/admin/inventory, roles:  ROLE_STAFF }
         - { path: ^/user, roles: ROLE_CUSTOMER }
         - { path: ^/settings, roles: [ ROLE_CUSTOMER, ROLE_STAFF, ROLE_ADMIN ] }
 
