@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EditProfileType;
+use App\Service\ActivityLogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,8 @@ final class SettingsController extends AbstractController
     public function index(
         Request $request,
         EntityManagerInterface $em,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        ActivityLogService $logService
     ): Response {
         /** @var User $user */
         $user = $this->getUser();
@@ -58,6 +60,8 @@ final class SettingsController extends AbstractController
 
 
             $em->flush();
+            $logService->log('update', $user->getId(), "Change Password: {$user->getFullName()}");
+
             $this->addFlash('success', 'Profile updated successfully.');
             return $this->redirectToRoute('app_setting');
         }

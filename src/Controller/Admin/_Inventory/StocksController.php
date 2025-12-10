@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin\_Inventory;
 
+use App\Service\ActivityLogService;
 use App\Entity\Stock;
 use App\Form\StockType;
 use App\Repository\StockRepository;
@@ -26,7 +27,7 @@ final class StocksController extends AbstractController
     }
 
     #[Route('/new', name: 'app_stocks_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    public function new(Request $request, EntityManagerInterface $em, ActivityLogService $logService): Response
     {
         $stock = new Stock();
         $form = $this->createForm(StockType::class, $stock, [
@@ -38,6 +39,7 @@ final class StocksController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($stock);
             $em->flush();
+            $logService->log('update',  $stock->getId(), "Quantity : {$stock->getQuantity()}");
 
             $this->addFlash('success', 'Stock added successfully!');
             return $this->redirectToRoute('app_stocks_index');
@@ -50,14 +52,14 @@ final class StocksController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_stocks_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Stock $stock, EntityManagerInterface $em): Response
+    public function edit(Request $request, Stock $stock, EntityManagerInterface $em, ActivityLogService $logService): Response
     {
         $form = $this->createForm(StockType::class, $stock);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
-
+            $logService->log('update',  $stock->getId(), "Quantity : {$stock->getQuantity()}");
             $this->addFlash('success', 'Stock updated successfully!');
             return $this->redirectToRoute('app_stocks_index');
         }
@@ -69,11 +71,13 @@ final class StocksController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_stocks_delete', methods: ['POST'])]
-    public function delete(Request $request, Stock $stock, EntityManagerInterface $em): Response
+    public function delete(Request $request, Stock $stock, EntityManagerInterface $em, ActivityLogService $logService): Response
     {
         if ($this->isCsrfTokenValid('delete' . $stock->getId(), $request->request->get('_token'))) {
             $em->remove($stock);
             $em->flush();
+            $logService->log('delete',  $stock->getId(), "Quantity : {$stock->getQuantity()}");
+
             $this->addFlash('success', 'Stock deleted successfully!');
         }
 

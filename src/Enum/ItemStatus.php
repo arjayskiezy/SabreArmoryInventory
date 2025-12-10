@@ -4,8 +4,8 @@ namespace App\Enum;
 
 enum ItemStatus: string
 {
-    case GOOD = 'Good';
-    case MAINTENANCE = 'Maintenance';
-    case LOW_AMMO = 'Low Ammo';
-    case URGENT = 'Urgent';
+    case GOOD = 'GOOD';
+    case MAINTENANCE = 'MAINTENANCE';
+    case LOW_AMMO = 'LOW_AMMO';
+    case URGENT = 'URGENT';
 }

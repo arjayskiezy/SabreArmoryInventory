@@ -6,6 +6,7 @@ use App\Entity\Unit;
 use App\Form\UnitType;
 use App\Repository\UnitRepository;
 use App\Repository\StockRepository;
+use App\Service\ActivityLogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,14 +19,11 @@ final class UnitController extends AbstractController
     #[Route(name: 'app_unit_index', methods: ['GET'])]
     public function index(UnitRepository $unitRepository, StockRepository $stockRepository, Request $request): Response
     {
-        return $this->render('UserPage/Admin/views/inventory/_inventory.html.twig', [
-            'units' => $unitRepository->findAll(),
-            'stocks' => $stockRepository->findAll(),
-        ]);
+        return $this->redirectToRoute('app_inventory', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/new', name: 'app_unit_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ActivityLogService $logService): Response
     {
         $unit = new Unit();
         $form = $this->createForm(UnitType::class, $unit, [
@@ -55,10 +53,13 @@ final class UnitController extends AbstractController
                 $entityManager->persist($unit);
                 $entityManager->flush();
 
-                $this->addFlash('Success', 'Unit created successfully.');
+                $logService->log('create', $unit->getId(), "Created unit: {$unit->getName()}");
+
+
+                $this->addFlash('success', 'Unit created successfully.');
                 return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
-                $this->addFlash('Error', 'An error occurred while creating the unit: ' . $e->getMessage());
+                $this->addFlash('error', 'An error occurred while creating the unit: ' . $e->getMessage());
             }
         }
 
@@ -77,7 +78,7 @@ final class UnitController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_unit_edit', methods: ['GET', 'POST'])]
-    public function edit(Unit $unit, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Unit $unit, Request $request, EntityManagerInterface $entityManager, ActivityLogService $logService): Response
     {
         $form = $this->createForm(UnitType::class, $unit, [
             'action' => $this->generateUrl('app_unit_edit', ['id' => $unit->getId()]),
@@ -105,11 +106,12 @@ final class UnitController extends AbstractController
                 }
 
                 $entityManager->flush();
+                $logService->log('update', $unit->getId(), "Updated unit: {$unit->getName()}");
 
-                $this->addFlash('Success', 'Unit updated successfully.');
+                $this->addFlash('success', 'Unit updated successfully.');
                 return $this->redirectToRoute('app_unit_index', [], Response::HTTP_SEE_OTHER);
             } catch (\Exception $e) {
-                $this->addFlash('Error', 'An error occurred while updating the unit: ' . $e->getMessage());
+                $this->addFlash('error', 'An error occurred while updating the unit: ' . $e->getMessage());
             }
         }
 
@@ -120,18 +122,20 @@ final class UnitController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_unit_delete', methods: ['POST'])]
-    public function delete(Request $request, Unit $unit, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Unit $unit, EntityManagerInterface $entityManager, ActivityLogService $logService): Response
     {
         if ($this->isCsrfTokenValid('delete' . $unit->getId(), $request->request->get('_token'))) {
             try {
                 $entityManager->remove($unit);
                 $entityManager->flush();
-                $this->addFlash('Success', 'Unit deleted successfully.');
+                $logService->log('delete', $unit->getId(), "Deleted unit: {$unit->getName()}");
+
+                $this->addFlash('success', 'Unit deleted successfully.');
             } catch (\Exception $e) {
-                $this->addFlash('Error', 'An error occurred while deleting the unit: ' . $e->getMessage());
+                $this->addFlash('error', 'An error occurred while deleting the unit: ' . $e->getMessage());
             }
         } else {
-            $this->addFlash('Error', 'Invalid CSRF token.');
+            $this->addFlash('error', 'Invalid CSRF token.');
         }
 
         return $this->redirectToRoute('app_unit_index');

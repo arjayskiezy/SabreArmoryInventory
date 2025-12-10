@@ -4,7 +4,7 @@ namespace App\Enum;
 
 enum EquipmentStatus: string
 {
-    case AVAILABLE = 'available';
-    case CHECKED_OUT = 'checked_out';
-    case MAINTENANCE = 'maintenance';
+    case AVAILABLE = 'AVAILABLE';
+    case CHECKED_OUT = 'CHECKED_OUT';
+    case MAINTENANCE = 'MAINTENANCE';
 }

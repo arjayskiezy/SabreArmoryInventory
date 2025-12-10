@@ -3,7 +3,7 @@ namespace App\Enum;
 
 enum UnitStatus: string
 {
-    case ACTIVE = 'active';
-    case DAMAGED = 'damaged';
-    case RETIRED = 'retired';
+    case ACTIVE = 'ACTIVE';
+    case DAMAGED = 'DAMAGED';
+    case RETIRED = 'RETIRED';
 }

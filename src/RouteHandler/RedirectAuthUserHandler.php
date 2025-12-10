@@ -50,6 +50,8 @@ class RedirectAuthUserHandler implements EventSubscriberInterface
             $response = new RedirectResponse($this->urlGenerator->generate('app_customer_dashboard'));
         } elseif (in_array('ROLE_ADMIN', $user->getRoles())) {
             $response = new RedirectResponse($this->urlGenerator->generate('app_admin_dashboard'));
+        } else {
+            $response = new RedirectResponse($this->urlGenerator->generate('app_inventory'));
         }
 
         if (isset($response)) {
@@ -73,6 +75,8 @@ class RedirectAuthUserHandler implements EventSubscriberInterface
                 $redirect = $this->urlGenerator->generate('app_customer_dashboard');
             } elseif (in_array('ROLE_ADMIN', $user->getRoles())) {
                 $redirect = $this->urlGenerator->generate('app_admin_dashboard');
+            } else {
+                $redirect = $this->urlGenerator->generate('app_inventory');
             }
 
             $event->setResponse(new RedirectResponse($redirect));

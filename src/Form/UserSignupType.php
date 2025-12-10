@@ -22,6 +22,14 @@ class UserSignupType extends AbstractType
                 'label' => 'Full Name',
                 'constraints' => [new NotBlank()],
             ])
+            ->add('contactNumber', TextType::class, [
+                'label' => 'Contact Number',
+                'constraints' => [new NotBlank()],
+            ])
+            ->add('bio', TextType::class, [
+                'label' => 'Bio',
+                'constraints' => [new NotBlank()],
+            ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'constraints' => [new NotBlank()],
@@ -38,6 +46,7 @@ class UserSignupType extends AbstractType
             ])
             ->add('userRank', EntityType::class, [
                 'class' => Rank::class,
+                'required' => false,
                 'choice_label' => 'name',
                 'placeholder' => 'Select a rank',
                 'label' => 'User Rank',

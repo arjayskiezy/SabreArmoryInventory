@@ -50,6 +50,18 @@ class UserType extends AbstractType
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
             ])
+            ->add('contactNumber', TextType::class, [
+                'attr' => ['class' => $inputClasses, 'placeholder' => 'Enter contact number'],
+                'label' => 'Contact Number',
+                'label_attr' => ['class' => $labelClasses],
+                'row_attr' => ['class' => $wrapperClasses],
+            ])
+            ->add('bio', TextType::class, [
+                'attr' => ['class' => $inputClasses, 'placeholder' => 'Enter bio'],
+                'label' => 'Bio',
+                'label_attr' => ['class' => $labelClasses],
+                'row_attr' => ['class' => $wrapperClasses],
+            ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
                 'required' => false,
@@ -80,7 +92,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'is_edit' => false, // default value
+            'is_edit' => false, 
         ]);
     }
 }

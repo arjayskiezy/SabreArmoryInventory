@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -33,6 +34,7 @@ class EditProfileType extends AbstractType
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
             ])
+
             ->add('email', EmailType::class, [
                 'label' => 'Email Address',
                 'constraints' => [new NotBlank()],
@@ -43,6 +45,29 @@ class EditProfileType extends AbstractType
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
             ])
+
+            ->add('contactNumber', TextType::class, [
+                'label' => 'Contact Number',
+                'required' => false,
+                'attr' => [
+                    'class' => $inputClasses,
+                    'placeholder' => 'Enter contact number',
+                ],
+                'label_attr' => ['class' => $labelClasses],
+                'row_attr' => ['class' => $wrapperClasses],
+            ])
+
+            ->add('bio', TextareaType::class, [
+                'label' => 'Bio',
+                'required' => false,
+                'attr' => [
+                    'class' => $inputClasses . ' h-24',
+                    'placeholder' => 'Write something about yourself...',
+                ],
+                'label_attr' => ['class' => $labelClasses],
+                'row_attr' => ['class' => $wrapperClasses],
+            ])
+
             ->add('currentPassword', PasswordType::class, [
                 'label' => 'Current Password',
                 'mapped' => false,
@@ -51,6 +76,7 @@ class EditProfileType extends AbstractType
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
             ])
+
             ->add('newPassword', PasswordType::class, [
                 'label' => 'New Password',
                 'mapped' => false,
@@ -59,6 +85,7 @@ class EditProfileType extends AbstractType
                 'label_attr' => ['class' => $labelClasses],
                 'row_attr' => ['class' => $wrapperClasses],
             ])
+
             ->add('confirmPassword', PasswordType::class, [
                 'label' => 'Confirm New Password',
                 'mapped' => false,

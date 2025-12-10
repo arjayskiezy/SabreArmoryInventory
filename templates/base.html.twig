@@ -1,32 +1,38 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="{{ asset('images/logo-head.png') }}" />
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link rel="icon" href="{{ asset('images/logo-head.png') }}"/>
 
-        {% block stylesheets %}
-        {{
+		{% block stylesheets %}
+			{{
             encore_entry_link_tags("app")
         }}
-        {% endblock %}
-    </head>
-    <body x-data="dashboard()">
-         {% block body %}{%
-        endblock %} {% block javascripts %}
-        {{ encore_entry_script_tags("app") }}
+		{% endblock %}
+	</head>
+	<body x-data="dashboard()">
 
-        <script>
-            document.addEventListener("alpine:init", () => {
-                Alpine.directive("modal", (el) => {
-                    el.addEventListener("click", (e) => {
-                        e.preventDefault();
-                        loadModal(el.getAttribute("href"));
-                    });
-                });
-            });
-        </script>
-        {% endblock %}
-    </body>
+		{% include 'UserPage/_alert.html.twig'%}
+		{% block body %}{%
+        endblock %}
+		{% block javascripts %}
+			{{ encore_entry_script_tags("app") }}
+
+			<script>
+				document.addEventListener("alpine:init", () => {
+Alpine.directive("modal", (el) => {
+el.addEventListener("click", (e) => {
+e.preventDefault();
+loadModal(el.getAttribute("href"));
+});
+});
+});
+			</script>
+		{% endblock %}
+	</body>
 </html>

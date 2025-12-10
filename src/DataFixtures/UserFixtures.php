@@ -25,7 +25,6 @@ class UserFixtures extends Fixture
 
         // Get existing ranks from DB
         $ranks = $manager->getRepository(Rank::class)->findAll();
-
         if (!$ranks) {
             throw new \Exception("No ranks found. Please load Rank fixtures first.");
         }
@@ -36,12 +35,12 @@ class UserFixtures extends Fixture
             $user->setEmail($faker->unique()->safeEmail);
             $user->setRoles(['ROLE_USER', 'ROLE_CUSTOMER']);
             $user->setFullName($faker->name());
-
-            // Assign a random rank
             $user->setUserRank($ranks[array_rand($ranks)]);
-
-            // Hash password
             $user->setPassword($this->passwordHasher->hashPassword($user, 'password'));
+
+            // Set contact number and bio
+            $user->setContactNumber($faker->phoneNumber);
+            $user->setBio($faker->sentence(12));
 
             $manager->persist($user);
         }
@@ -53,15 +52,19 @@ class UserFixtures extends Fixture
         $demo->setFullName('Demo User');
         $demo->setUserRank($ranks[array_rand($ranks)]);
         $demo->setPassword($this->passwordHasher->hashPassword($demo, 'userpass123'));
+        $demo->setContactNumber($faker->phoneNumber);
+        $demo->setBio($faker->sentence(12));
         $manager->persist($demo);
 
         // Admin user
         $admin = new User();
         $admin->setEmail('admin@example.com');
-        $admin->setRoles(['ROLE_USER','ROLE_ADMIN']);
+        $admin->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
         $admin->setFullName('Administrator');
         $admin->setUserRank($ranks[array_rand($ranks)]);
         $admin->setPassword($this->passwordHasher->hashPassword($admin, 'adminpass123'));
+        $admin->setContactNumber($faker->phoneNumber);
+        $admin->setBio($faker->sentence(12));
         $manager->persist($admin);
 
         $manager->flush();

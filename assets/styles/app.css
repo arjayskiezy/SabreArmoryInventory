@@ -20,6 +20,10 @@ body {
     border-radius: 8px;
 }
 
+[x-cloak] {
+    display: none !important;
+}
+
 /* Primary (Red) */
 /* .bg-primary {
     background-color: #d42121; 

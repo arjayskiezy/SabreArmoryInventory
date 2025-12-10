@@ -1,65 +1,56 @@
 <header
-    class="flex items-center justify-between px-4 md:px-8 py-3 bg-white shadow-sm border-gray-100"
->
-    <!-- Left section -->
-    <div class="flex items-center gap-4">
-        <!-- Mobile Sidebar Toggle -->
-        <button
-            type="button"
-            class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition"
-            @click="mobileSidebar = true"
-            aria-label="Open sidebar"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg"
-                class="h-6 w-6 text-gray-700"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-        </button>
+	class="flex items-center justify-between px-4 md:px-8 py-3 bg-white shadow-sm border-gray-100">
+	<!-- Left section -->
+	<div
+		class="flex items-center gap-4">
+		<!-- Mobile Sidebar Toggle -->
+		<button type="button" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition" @click="mobileSidebar = true" aria-label="Open sidebar">
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+			</svg>
+		</button>
 
-        <!-- Logo / Title -->
-        <h1 class="hidden md:block text-2xl font-bold text-gray-800 tracking-tight">
-            Overview
-        </h1>
-    </div>
+		<!-- Logo / Title -->
+		<h1 class="hidden md:block text-2xl font-bold text-gray-800 tracking-tight">
+			{% if 'ROLE_ADMIN' in app.user.roles %}
+				Admin Dashboard
+			{% else %}
+				Staff Dashboard
+			{% endif %}
+		</h1>
+	</div>
 
-    <!-- Center section (Quick Stats) -->
-    <div class="hidden lg:flex items-center gap-4">
-        <div class="flex gap-4">
-            {% set stats = [
-                { label: 'Total Weapons', value: '1,234' },
-                { label: 'Checked Out', value: '42' },
-                { label: 'Pending Requests', value: '7' }
-            ] %}
-            {% for s in stats %}
-                <div class="px-4 py-2 bg-gray-50 rounded-xl shadow-sm border border-gray-100 text-sm">
-                    <div class="text-xs text-gray-500">{{ s.label }}</div>
-                    <div class="font-semibold text-gray-800">{{ s.value }}</div>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+	{# <!-- Center section (Quick Stats) -->
+	    <div class="hidden lg:flex items-center gap-4">
+	        <div class="flex gap-4">
+	            {% set stats = [
+	                { label: 'Total Weapons', value: '1,234' },
+	                { label: 'Checked Out', value: '42' },
+	                { label: 'Pending Requests', value: '7' }
+	            ] %}
+	            {% for s in stats %}
+	                <div class="px-4 py-2 bg-gray-50 rounded-xl shadow-sm border border-gray-100 text-sm">
+	                    <div class="text-xs text-gray-500">{{ s.label }}</div>
+	                    <div class="font-semibold text-gray-800">{{ s.value }}</div>
+	                </div>
+	            {% endfor %}
+	        </div>
+	    </div> #}
 
-    <!-- Right section -->
-    <div class="flex items-center gap-2">
-        <!-- Action Buttons -->
-        <div class="hidden sm:flex gap-2">
-            <button
-                class="bg-primary text-white font-medium py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform hover:scale-105"
-                @click="openModal('newRequest')"
-            >
-                New Request
-            </button>
-            <button
-                class="bg-secondary text-white font-medium py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform hover:scale-105"
-                @click="openModal('issue')"
-            >
-                Issue / Return
-            </button>
-        </div>
+	<!-- Right section -->
+	{# <div
+		class="flex items-center gap-2">
+		<!-- Action Buttons -->
+		<div class="hidden sm:flex gap-2">
+			<button class="bg-primary text-white font-medium py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform hover:scale-105" @click="openModal('newRequest')">
+				New Request
+			</button>
+			<button class="bg-secondary text-white font-medium py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-transform hover:scale-105" @click="openModal('issue')">
+				Issue / Return
+			</button>
+		</div> #}
 
-        <!-- Notifications -->
-        {% include 'UserPage/Admin/_notifications.html.twig' %}
-    </div>
+		<!-- Notifications -->
+		{# {% include 'UserPage/Admin/_notifications.html.twig' %} #}
+	{# </div> #}
 </header>

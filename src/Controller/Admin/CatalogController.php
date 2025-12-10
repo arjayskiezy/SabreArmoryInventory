@@ -16,11 +16,11 @@ final class CatalogController extends AbstractController
         UnitInstanceRepository $unitInstanceRepository,
         UnitTypeRepository $unitTypeRepository
     ): Response {
-        $unitInstances = $unitInstanceRepository->findAll();
+        $unitInstance = $unitInstanceRepository->findAll();
         $unitTypes = $unitTypeRepository->findAll(); 
 
         return $this->render('UserPage/Admin/views/catalog/_catalog.html.twig', [
-            'unitInstances' => $unitInstances,
+            'unitInstance' => $unitInstance,
             'unitTypes' => $unitTypes,
         ]);
     }

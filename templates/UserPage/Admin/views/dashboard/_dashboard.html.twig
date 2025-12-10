@@ -1,54 +1,164 @@
-{% extends 'UserPage/Admin/index.html.twig' %} {% block title %}Firearm &
-Equipment Dashboard{% endblock %} {% block admin_content %}
-<div class="space-y-8">
-    <!-- Top Summary Widgets -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {% set widgets = [ { title: 'Total Firearms', value: '1,234', note: 'In
-        stock' }, { title: 'Checked Out', value: '42', note: 'Currently issued'
-        }, { title: 'Return', value: '5', note: 'For Maintenance' }, { title:
-        'Pending Requests', value: '7', note: 'Awaiting approval' }, ] %} {% for
-        w in widgets %}
-        <div
-            class="bg-white rounded-xl shadow p-4 flex flex-col justify-between"
-        >
-            <div>
-                <div class="text-xs text-gray-500">{{ w.title }}</div>
-                <div class="text-2xl font-bold">{{ w.value }}</div>
-            </div>
-            <div class="text-xs text-gray-400 mt-1">{{ w.note }}</div>
-        </div>
-        {% endfor %}
-    </section>
+{% extends 'UserPage/Admin/index.html.twig' %}
 
-    <!-- Charts Section -->
-    <section
-        x-data="dashboardData()"
-        x-init="loadData()"
-        class="grid grid-cols-1 lg:grid-cols-2 gap-6"
-    >
-        <div class="bg-white rounded-xl shadow p-4 h-100">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="font-semibold">Issuance Trends</h2>
-                <span class="text-xs text-gray-400">Last 4 weeks</span>
-            </div>
-            <canvas id="issuanceChart" class="p-10 w-full h-full"></canvas>
-        </div>
+{% block title %}Firearm & Equipment Dashboard
+{% endblock %}
 
-        <div class="bg-white rounded-xl shadow p-4 h-100">
-            <div class="flex justify-between items-center mb-2">
-                <h2 class="font-semibold">Category Distribution</h2>
-                <span class="text-xs text-gray-400">Asset Categories</span>
-            </div>
-            <canvas id="categoryChart" class="p-10 w-full h-full"></canvas>
-        </div>
-    </section>
-</div>
-{% endblock %} 
-{% block javascripts %}
-{{ encore_entry_script_tags("app") }}
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        initDashboardCharts();
-    });
-</script>
+{% block admin_content %}
+	<div
+		class="space-y-2">
+
+		<!-- Summary Widgets -->
+		<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+			{% set widgets = [
+            { title: 'Total Users', value: totalUsers, note: 'Active accounts', icon: 'users' },
+            { title: 'Total Staff', value: totalStaff, note: 'Staff members', icon: 'id-badge' },
+            { title: 'Total Reports', value: totalReports, note: 'Issues & Update', icon: 'folder' },
+            { title: 'Recent Activities', value: recentLogs|length, note: 'Today', icon: 'clock' }
+        ] %}
+
+			{% for w in widgets %}
+				<div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between hover:shadow-xl transition-all">
+
+					<div class="flex items-center justify-between">
+						<div>
+							<div class="text-sm text-gray-500">{{ w.title }}</div>
+							<div class="text-4xl font-extrabold text-gray-800">{{ w.value }}</div>
+						</div>
+
+						<!-- ICONS -->
+						<div class="bg-blue-100 p-3 rounded-xl">
+							{% if w.icon == 'users' %}
+								<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-blue-700" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20v-2a4 4 0 00-3-3.87m-3-.13a4 4 0 010-8 4 4 0 010 8zM9 20v-2a4 4 0 013-3.87"/>
+								</svg>
+							{% elseif w.icon == 'id-badge' %}
+								<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-blue-700" viewbox="0 0 20 20" fill="currentColor">
+									<path d="M6 2a2 2 0 00-2 2v2h12V4a2 2 0 00-2-2H6z"/>
+									<path fill-rule="evenodd" d="M4 8h12v8a2 2 0 01-2 2H6a2 2 0 01-2-2V8zm6 1a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd"/>
+								</svg>
+							{% elseif w.icon == 'folder' %}
+								<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-blue-700" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7a2 2 0 012-2h5l2 2h7a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/>
+								</svg>
+							{% elseif w.icon == 'clock' %}
+								<svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-blue-700" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m5-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+								</svg>
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="text-xs text-gray-400 mt-3">{{ w.note }}</div>
+				</div>
+			{% endfor %}
+		</section>
+
+
+		<!-- Category Distribution -->
+		<div class="bg-white rounded-2xl shadow-lg p-6">
+			<div class="flex items-center gap-2 mb-4">
+				<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-700" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+					<circle cx="12" cy="12" r="10" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v10h10a10 10 0 00-10-10z"/>
+
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12h10a10 10 0 01-10 10V12z"/>
+				</svg>
+
+				<h2 class="font-semibold text-xl text-gray-700">Category Distribution</h2>
+			</div>
+
+
+			<div class="flex flex-wrap gap-4">
+				{% for i in 0..(categoryDistribution.labels|length - 1) %}
+					<div class="flex-1 bg-gray-50 rounded-2xl shadow p-5 flex items-center gap-4 min-w-[180px] hover:bg-gray-100 transition">
+
+						<div class="flex-1 text-center">
+							<div class="text-sm text-gray-600">{{ categoryDistribution.labels[i] }}</div>
+							<div class="text-3xl font-bold text-gray-800">{{ categoryDistribution.data[i] }}</div>
+							<div class="text-xs text-gray-400">Items</div>
+						</div>
+
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+
+
+		<!-- Table Section -->
+		<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+			{% if is_granted('ROLE_ADMIN') %}
+				<div class="col-span-10 lg:col-span-6 bg-white rounded-2xl shadow-lg p-6">
+
+					<div class="flex items-center gap-2 mb-4">
+						<svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-700" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+						</svg>
+						<h2 class="font-semibold text-xl text-gray-700">Recent Activities</h2>
+					</div>
+
+					<!-- SCROLL CONTAINER -->
+					<div class="max-h-96 overflow-y-auto rounded-xl border border-gray-200">
+
+						<table class="min-w-full divide-y divide-gray-200 text-sm">
+							<thead class="bg-gray-100 text-gray-700 uppercase text-xs tracking-wider sticky top-0 z-10 shadow-sm">
+								<tr>
+									<th class="px-4 py-3 text-left">User</th>
+									<th class="px-4 py-3 text-left">Role</th>
+									<th class="px-4 py-3 text-left">Action</th>
+									<th class="px-4 py-3 text-left">Target Data</th>
+									<th class="px-4 py-3 text-left">Date & Time</th>
+								</tr>
+							</thead>
+
+							<tbody class="divide-y divide-gray-100">
+								{% for log in recentLogs %}
+									<tr class="bg-white hover:bg-gray-50 transition-colors border-b border-gray-100">
+										<td class="px-4 py-3 font-medium text-gray-900">{{ log.userId.fullName ?? 'N/A' }}</td>
+
+										<td class="px-4 py-3">
+											{% set role = (log.userId.roles[1] ?? 'N/A')|replace({'ROLE_': ''}) %}
+											{% if role != 'N/A' %}
+												<span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-medium">
+													{{ role }}
+												</span>
+											{% else %}
+												N/A
+											{% endif %}
+										</td>
+
+										<td class="px-4 py-3 text-gray-700">{{ log.action }}</td>
+										<td class="px-4 py-3 text-gray-700 truncate max-w-xs">{{ log.targetData }}</td>
+										<td class="px-4 py-3 text-gray-700">{{ log.createdAt|date('Y-m-d H:i:s') }}</td>
+									</tr>
+								{% else %}
+									<tr>
+										<td colspan="5" class="px-4 py-6 text-center text-gray-400">No recent activity logs.</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+					</div>
+					<!-- END SCROLL AREA -->
+
+				</div>
+
+			{% else %}
+				<div class="col-span-10 lg:col-span-6 bg-white rounded-2xl shadow-lg p-10 text-center">
+					<h2 class="text-xl font-semibold text-gray-700">Restricted Area</h2>
+					<p class="text-gray-500 mt-2">Only administrators can view recent activity logs.</p>
+					<div class="mt-6">
+						<span class="inline-flex items-center px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm">
+							Access Denied
+						</span>
+					</div>
+				</div>
+			{% endif %}
+
+		</section>
+
+
+	</div>
 {% endblock %}

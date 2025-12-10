@@ -1,141 +1,176 @@
-{% extends 'UserPage/Admin/index.html.twig' %} {% block title %}Firearm &
-Equipment Catalog{% endblock %} {% block admin_content %}
-<div x-data="catalog()" class="flex flex-col gap-4">
-    <!-- Filters -->
-    <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold">Firearm & Equipment Catalog</h2>
-        <div class="flex items-center gap-2">
-            <!-- Category Filter -->
-            <select
-                x-model="filter.category"
-                class="px-3 py-2 border rounded-xl border-gray-200"
-            >
-                <option value="">All Categories</option>
-                {% for type in unitTypes %}
-                <option value="{{ type.name }}">{{ type.name }}</option>
-                {% endfor %}
-            </select>
+{% extends 'UserPage/Admin/index.html.twig' %}
 
-            <input
-                x-model="filter.q"
-                @input.debounce.300="searchCatalog()"
-                placeholder="Model / Serial #"
-                class="px-3 py-2 border rounded-xl border-gray-200"
-            />
-        </div>
-    </div>
+{% block title %}Firearm & Equipment Reports{% endblock %}
 
-    <!-- Catalog Table -->
-    <div
-        class="overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-200 max-h-[500px] overflow-y-auto"
-    >
-        <table class="min-w-full divide-y divide-gray-200 text-sm">
-            <thead
-                class="bg-gray-100 text-gray-700 uppercase text-xs tracking-wider sticky top-0 z-10"
+{% block admin_content %}
+<div class="flex">
+    <div class="flex-1 flex flex-col bg-gray-50">
+        <main class="flex-1 overflow-y-auto">
+            <section
+                x-data="{
+                    openModal: false,
+                    modalHtml: '',
+                    isLoading: false,
+                    search: '',
+                    filter: '',
+                    anyVisible: true,
+
+                    loadModal(url) {
+                        this.openModal = true;
+                        this.isLoading = true;
+                        this.modalHtml = `
+                            <div class='flex items-center justify-center py-10 text-gray-500'>
+                                <svg class='animate-spin h-6 w-6 mr-2 text-blue-600' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24'>
+                                    <circle class='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' stroke-width='4'></circle>
+                                    <path class='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z'></path>
+                                </svg>
+                                Loading...
+                            </div>`;
+                        fetch(url)
+                            .then(r => r.text())
+                            .then(html => {
+                                this.modalHtml = html;
+                                this.isLoading = false;
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                this.modalHtml = `
+                                    <div class='text-center py-10 text-red-500'>
+                                        Error loading content.
+                                    </div>`;
+                                this.isLoading = false;
+                            });
+                    },
+
+                    checkVisible() {
+                        this.$nextTick(() => {
+                            const rows = Array.from(this.$root.querySelectorAll('tr[data-row]'));
+                            this.anyVisible = rows.some(tr => tr.offsetParent !== null);
+                        });
+                    }
+                }"
+                x-effect="checkVisible()"
+                class="space-y-4"
             >
-                <tr>
-                    <th class="px-4 py-3 text-left">Owner</th>
-                    <th class="px-4 py-3 text-left">Purchased Date</th>
-                    <th class="px-4 py-3 text-left">Model</th>
-                    <th class="px-4 py-3 text-left">Serial #</th>
-                    <th class="px-4 py-3 text-left">Condition</th>
-                    <th class="px-4 py-3 text-left">Status</th>
-                    <th class="px-4 py-3 text-left">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for unit in unitInstances %}
-                <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3">
-                        {{
-                            unit.weaponType
-                                ? unit.owner.fullname
-                                : "Not Yet Purchased"
-                        }}
-                    </td>
-                    <td class="px-4 py-3">
-                        {{ unit.purchasedDate ? unit.purchasedDate|date('Y-m-d') : "Not Yet Purchased" }}
-                    </td>
-                    <td class="px-4 py-3">
-                        {{
-                            unit.weaponType
-                                ? unit.weaponType.name
-                                : "Not Yet Purchased"
-                        }}
-                    </td>
-                    <td class="px-4 py-3">{{ unit.serialNumber }}</td>
-                    <td class="px-4 py-3">{{ unit.itemStatus.value }}</td>
-                    <td class="px-4 py-3">
-                        {% if unit.status.value == 'active' %}
-                        <span class="text-sm font-medium text-green-600">{{
-                            unit.status.value
-                        }}</span>
-                        {% else %}
-                        <span class="text-sm font-medium text-red-600">{{
-                            unit.status.value
-                        }}</span>
-                        {% endif %}
-                    </td>
-                    <td class="px-4 py-3 flex gap-2">
-                        <button
-                            @click="openModal('issue', { itemId: {{
-                                unit.id
-                            }} })"
-                            class="bg-primary text-white text-xs font-medium px-3 py-1 rounded-lg shadow transition-transform transform hover:scale-105"
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div>
+                        <h2 class="text-xl font-semibold">Firearm & Equipment Reports</h2>
+                        <p class="text-sm text-gray-500">A complete list of all firearms and issued equipment reports.</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <input
+                            type="text"
+                            placeholder="Search model or serial #..."
+                            x-model="search"
+                            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none w-64 text-sm"
+                        />
+
+                        {# <select
+                            x-model="filter"
+                            class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
                         >
-                            Issue
-                        </button>
-                        <button
-                            @click="openModal('editItem', { itemId: {{
-                                unit.id
-                            }} })"
-                            class="bg-secondary text-white text-xs font-medium px-3 py-1 rounded-lg shadow transition-transform transform hover:scale-105"
+                            <option value="">All Categories</option>
+                            {% for type in unitTypes %}
+                                <option value="{{ type.name }}">{{ type.name }}</option>
+                            {% endfor %}
+                        </select> #}
+
+                        {# <button
+                            @click="loadModal('{{ path('app_unit_instance_new') }}')"
+                            class="bg-primary text-white text-sm font-medium px-4 py-2 rounded-lg shadow transition-transform transform hover:scale-105"
                         >
-                            Edit
-                        </button>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="6" class="px-4 py-3 text-center text-gray-400">
-                        No records found.
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                            + Issue
+                        </button> #}
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-200 max-h-[500px] overflow-y-auto mt-4">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm rounded-lg">
+                        <thead class="bg-gray-100 text-gray-700 uppercase text-xs tracking-wider sticky top-0 z-10">
+                            <tr>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Owner</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Purchased Date</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Model</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Serial #</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Condition</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Status</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-gray-100">
+                            {% for unit_instance in unitInstance %}
+                                <tr
+                                    data-row
+                                    class="hover:bg-gray-50 transition-colors border-b border-gray-200"
+                                    x-data="{
+                                        name: '{{ unit_instance.weaponType ? unit_instance.weaponType.name|lower|e('js') : '' }}',
+                                        serial: '{{ unit_instance.serialNumber|lower|e('js') }}',
+                                        isVisible: false
+                                    }"
+                                    x-show="
+                                        (name.includes(search.toLowerCase()) || serial.includes(search.toLowerCase())) &&
+                                        (filter === '' || name.includes(filter.toLowerCase()))
+                                    "
+                                >
+                                    <td class="px-4 py-3">
+                                        {{ unit_instance.owner ? unit_instance.owner.fullname : 'Not Yet Purchased' }}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        {{ unit_instance.purchasedDate ? unit_instance.purchasedDate|date('Y-m-d') : 'Not Yet Purchased' }}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        {{ unit_instance.weaponType ? unit_instance.weaponType.name : 'Not Yet Purchased' }}
+                                    </td>
+                                    <td class="px-4 py-3">{{ unit_instance.serialNumber }}</td>
+                                    <td class="px-4 py-3">
+                                        <span class="
+                                            px-2 py-1 rounded-lg text-xs font-medium
+                                            {% if unit_instance.itemStatus.value == 'GOOD' %}
+                                                bg-green-100 text-green-700
+                                            {% elseif unit_instance.itemStatus.value == 'FAIR' %}
+                                                bg-yellow-100 text-yellow-700
+                                            {% else %}
+                                                bg-red-100 text-red-700
+                                            {% endif %}
+                                        ">
+                                            {{ unit_instance.itemStatus.value }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="
+                                            px-2 py-1 rounded-lg text-xs font-medium
+                                            {% if unit_instance.status.value == 'ACTIVE' %}
+                                                bg-green-100 text-green-700
+                                            {% else %}
+                                                bg-red-100 text-red-700
+                                            {% endif %}
+                                        ">
+                                            {{ unit_instance.status.value }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        {{ include("UserPage/Admin/forms/unit_instance/_actions_link.html.twig", { unit_instance: unit_instance }) }}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr x-show="anyVisible" x-transition.opacity.duration.300ms>
+                                    <td colspan="7" class="px-4 py-6 text-center text-gray-400">
+                                        No records found.
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Modal -->
+                {% include 'UserPage/Admin/modals/_openModal.html.twig' %}
+            </section>
+        </main>
     </div>
 </div>
-
-<script>
-    function catalog() {
-        return {
-            filter: {
-                category: "",
-                q: "",
-            },
-            searchCatalog() {
-                const rows = document.querySelectorAll("tbody tr");
-                rows.forEach((row) => {
-                    const type = row.children[0].innerText.toLowerCase();
-                    const model = row.children[1].innerText.toLowerCase();
-                    const serial = row.children[2].innerText.toLowerCase();
-                    const query = this.filter.q.toLowerCase();
-                    const category = this.filter.category.toLowerCase();
-
-                    const matchesQuery =
-                        model.includes(query) || serial.includes(query);
-                    const matchesCategory =
-                        category === "" || type === category;
-
-                    row.style.display =
-                        matchesQuery && matchesCategory ? "" : "none";
-                });
-            },
-            openModal(type, payload) {
-                console.log(`Open modal '${type}' for item`, payload.itemId);
-            },
-        };
-    }
-</script>
 {% endblock %}

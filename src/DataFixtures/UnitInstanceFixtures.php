@@ -35,25 +35,30 @@ class UnitInstanceFixtures extends Fixture implements DependentFixtureInterface
             $unitInstance->setOwner($faker->randomElement($users));
             $unitInstance->setSerialNumber(strtoupper($faker->unique()->bothify('SN-####-??')));
 
-            // Random purchased date OR "Not Yet Purchased"
-            if ($faker->boolean(80)) { // 80% chance purchased
-                $unitInstance->setPurchasedDate(
-                    \DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-5 years', 'now'))
-                );
-            }
+            // Purchased date must always exist
+            $unitInstance->setPurchasedDate(
+                \DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-5 years', 'now'))
+            );
 
-            $unitInstance->setStatus($faker->randomElement([
-                UnitStatus::ACTIVE,
-                UnitStatus::DAMAGED,
-                UnitStatus::RETIRED,
-            ]));
-
-            $unitInstance->setItemStatus($faker->randomElement([
+            // Item status
+            $itemStatus = $faker->randomElement([
                 ItemStatus::GOOD,
                 ItemStatus::MAINTENANCE,
                 ItemStatus::LOW_AMMO,
                 ItemStatus::URGENT,
-            ]));
+            ]);
+            $unitInstance->setItemStatus($itemStatus);
+
+            // Unit status: if item status is GOOD, it must be ACTIVE
+            if ($itemStatus === ItemStatus::GOOD) {
+                $unitInstance->setStatus(UnitStatus::ACTIVE);
+            } else {
+                $unitInstance->setStatus($faker->randomElement([
+                    UnitStatus::ACTIVE,
+                    UnitStatus::DAMAGED,
+                    UnitStatus::RETIRED,
+                ]));
+            }
 
             $manager->persist($unitInstance);
         }

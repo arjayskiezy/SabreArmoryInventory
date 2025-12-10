@@ -80,7 +80,7 @@ Management {% endblock %} {% block admin_content %}
                         </select>
 
                         {% set buttons = [ { label: '+ Unit', route:
-                        'app_unit_new' }, { label: '+ Stocks', route:
+                        'app_unit_new' }, { label: 'Stocks', route:
                         'app_stocks_new' } ] %} {% for btn in buttons %}
                         <button
                             @click="loadModal('{{ path(btn.route) }}')"

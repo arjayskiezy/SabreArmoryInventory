@@ -35,10 +35,12 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
 
         $roles = $user->getRoles();
 
-        if (in_array('ROLE_ADMIN', $roles)) {
+        if (in_array('ROLE_ADMIN', $roles))  {
             return $this->urlGenerator->generate('app_admin_dashboard');
         } elseif (in_array('ROLE_CUSTOMER', $roles)) {
             return $this->urlGenerator->generate('app_customer_dashboard');
+        } else {
+            return $this->urlGenerator->generate('app_inventory');
         }
 
         return $this->urlGenerator->generate('app_login');

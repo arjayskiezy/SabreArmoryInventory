@@ -4,7 +4,7 @@ namespace App\Enum;
 
 enum UserStatus: string
 {
-    case COMMISSIONED = 'Commissioned';
-    case NON_COMMISSIONED = 'Non-Commissioned';
-    case ENLISTED = 'Enlisted';
+    case COMMISSIONED = 'COMMISSIONED';
+    case NON_COMMISSIONED = 'Non-NON_COMMISSIONED';
+    case ENLISTED = 'ENLISTED';
 }

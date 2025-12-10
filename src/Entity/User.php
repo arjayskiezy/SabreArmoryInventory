@@ -6,6 +6,7 @@ use App\Enum\UserActiveStatus;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -56,7 +57,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $unitInstances;
 
     #[ORM\Column(enumType: UserActiveStatus::class)]
-    private ?UserActiveStatus $status = null;
+    private ?UserActiveStatus $status = UserActiveStatus::ACTIVE;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $contactNumber = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $bio = null;
 
     public function __construct()
     {
@@ -206,6 +213,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setStatus(UserActiveStatus $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getContactNumber(): ?string
+    {
+        return $this->contactNumber;
+    }
+
+    public function setContactNumber(?string $contactNumber): static
+    {
+        $this->contactNumber = $contactNumber;
+
+        return $this;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): static
+    {
+        $this->bio = $bio;
 
         return $this;
     }

@@ -34,6 +34,9 @@ class UnitInstance
     #[ORM\ManyToOne(inversedBy: 'unitInstances')]
     private ?User $owner = null;
 
+    #[ORM\ManyToOne]
+    private ?Unit $unitType = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +110,18 @@ class UnitInstance
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getUnitType(): ?Unit
+    {
+        return $this->unitType;
+    }
+
+    public function setUnitType(?Unit $unitType): static
+    {
+        $this->unitType = $unitType;
 
         return $this;
     }

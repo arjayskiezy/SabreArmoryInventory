@@ -28,12 +28,12 @@ class NotFoundHandler
 
             // If logged in, redirect based on role
             if ($user) {
-                if (in_array('ROLE_ADMIN', $user->getRoles())) {
+                if (in_array('ROLE_ADMIN', $user->getRoles())){
                     $redirect = $this->urlGenerator->generate('app_admin_dashboard');
                 } elseif (in_array('ROLE_CUSTOMER', $user->getRoles())) {
                     $redirect = $this->urlGenerator->generate('app_customer_dashboard');
                 } else {
-                    $redirect = $this->urlGenerator->generate('app_login');
+                    $redirect = $this->urlGenerator->generate('app_inventory');
                 }
             } else {
                 // Not logged in, redirect to login
