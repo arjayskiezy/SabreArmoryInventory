@@ -1,61 +1,100 @@
-<h1 class="text-2xl font-bold mb-6">Unit Index</h1>
+<h1 class="text-2xl font-bold mb-6">Unit Instance Details</h1>
 
 <div class="bg-white shadow rounded-lg overflow-hidden">
     <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
-            <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Image Path</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created At</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Updated At</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-            </tr>
-        </thead>
         <tbody class="divide-y divide-gray-200">
-            {% for unit in units %}
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 text-sm text-gray-800">{{ unit.id }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-800">{{ unit.name }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-600">{{ unit.description }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-800">{{ unit.price }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-600">{{ unit.imagePath }}</td>
-                    <td class="px-6 py-4 text-sm text-gray-600">
-                        {{ unit.createdAt ? unit.createdAt|date('Y-m-d H:i:s') : '' }}
-                    </td>
-                    <td class="px-6 py-4 text-sm text-gray-600">
-                        {{ unit.updatedAt ? unit.updatedAt|date('Y-m-d H:i:s') : '' }}
-                    </td>
-                    <td class="px-6 py-4 text-sm flex gap-3">
-                        <a
-                            href="{{ path('app_unit_show', { id: unit.id }) }}"
-                            @click.prevent="loadModal('{{ path('app_unit_show', { id: unit.id }) }}')"
-                            class="text-blue-600 hover:underline"
-                        >
-                            Show
-                        </a>
-                        <a
-                            href="{{ path('app_unit_edit', { id: unit.id }) }}"
-                            @click.prevent="loadModal('{{ path('app_unit_edit', { id: unit.id }) }}')"
-                            class="text-green-600 hover:underline"
-                        >
-                            Edit
-                        </a>
-                    </td>
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="8" class="px-6 py-4 text-center text-gray-500">
-                        No records found
-                    </td>
-                </tr>
-            {% endfor %}
+
+            <!-- ID -->
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                    ID
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">{{ unit_instance.id }}</td>
+            </tr>
+
+            <!-- Serial Number -->
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                    Serial #
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">{{ unit_instance.serialNumber }}</td>
+            </tr>
+
+            <!-- Weapon Type -->
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                    Type
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ unit_instance.weaponType ? unit_instance.weaponType.name : "No type" }}
+                </td>
+            </tr>
+
+            <!-- Owner -->
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                    Owner
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ unit_instance.owner ? unit_instance.owner.fullname : "Not Assigned" }}
+                </td>
+            </tr>
+
+            <!-- Purchased Date -->
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                    Purchased Date
+                </th>
+                <td class="px-6 py-3 text-sm text-gray-800">
+                    {{ unit_instance.purchasedDate ? unit_instance.purchasedDate|date('Y-m-d') : "Not Purchased" }}
+                </td>
+            </tr>
+
+            <!-- Condition -->
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                    Condition
+                </th>
+                <td class="px-6 py-3 text-sm">
+                    <span class="
+                        px-2 py-1 rounded-lg text-xs font-medium
+                        {% if unit_instance.itemStatus.value == 'GOOD' %}
+                            bg-green-100 text-green-700
+                        {% elseif unit_instance.itemStatus.value == 'FAIR' %}
+                            bg-yellow-100 text-yellow-700
+                        {% else %}
+                            bg-red-100 text-red-700
+                        {% endif %}
+                    ">
+                        {{ unit_instance.itemStatus.value }}
+                    </span>
+                </td>
+            </tr>
+
+            <!-- Status -->
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-gray-600">
+                    Status
+                </th>
+                <td class="px-6 py-3 text-sm">
+                    <span class="
+                        px-2 py-1 rounded-lg text-xs font-medium
+                        {% if unit_instance.status.value == 'ACTIVE' %}
+                            bg-green-100 text-green-700
+                        {% else %}
+                            bg-red-100 text-red-700
+                        {% endif %}
+                    ">
+                        {{ unit_instance.status.value }}
+                    </span>
+                </td>
+            </tr>
+
         </tbody>
     </table>
 </div>
 
-<div class="mt-6">
-    {{ include("UserPage/Admin/forms/unit/_create_link.html.twig") }}
+<div class="mt-6 flex items-center gap-3">
+    {{ include("UserPage/Admin/forms/unit_instance/_edit_link.html.twig", { unit_instance: unit_instance }) }}
+    {{ include("UserPage/Admin/forms/unit_instance/_delete_link.html.twig") }}
 </div>

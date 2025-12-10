@@ -1,7 +1,7 @@
 {% if unit_instance is defined %}
     <a
         href="{{ path('app_unit_instance_edit', { id: unit_instance.id }) }}"
-        @click.prevent="loadModal('{{ path('app_unit_instance_edit', { id: unit_instance.id }) }}')"
+        {# @click.prevent="loadModal('{{ path('app_unit_instance_edit', { id: unit_instance.id }) }}')" #}
         class="p-2 text-green-600 hover:text-green-700 bg-transparent rounded-lg shadow-sm transition-transform transform hover:scale-105"
         title="Edit Unit"
     >

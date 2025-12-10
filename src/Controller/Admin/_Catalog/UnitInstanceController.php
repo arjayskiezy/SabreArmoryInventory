@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/unit/instance')]
+#[Route('/admin')]
 final class UnitInstanceController extends AbstractController
 {
     private ActivityLogService $logService;
@@ -21,7 +21,7 @@ final class UnitInstanceController extends AbstractController
         $this->logService = $logService;
     }
 
-    #[Route(name: 'app_unit_instance_index', methods: ['GET'])]
+    #[Route('/unit/instance', name: 'app_unit_instance_index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->redirectToRoute('app_catalog');
@@ -30,23 +30,23 @@ final class UnitInstanceController extends AbstractController
     #[Route('/new', name: 'app_unit_instance_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, ActivityLogService $logService): Response
     {
-        $unitInstance = new UnitInstance();
-        $form = $this->createForm(UnitInstanceType::class, $unitInstance);
+        $unitInstances = new UnitInstance();
+        $form = $this->createForm(UnitInstanceType::class, $unitInstances);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $entityManager->persist($unitInstance);
+            $entityManager->persist($unitInstances);
             $entityManager->flush();
 
             $this->addFlash('success', 'Unit instance created successfully.');
-            $logService->log('create', $unitInstance->getId(), "Created unit instance: {$unitInstance->getSerialNumber()}");
+            $logService->log('create', $unitInstances->getId(), "Created unit instance: {$unitInstances->getSerialNumber()}");
 
             return $this->redirectToRoute('app_unit_instance_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('UserPage/Admin/forms/unit_instance/new.html.twig', [
-            'unit_instance' => $unitInstance,
+            'unit_instance' => $unitInstances,
             'form' => $form->createView(),
         ]);
     }
@@ -60,27 +60,26 @@ final class UnitInstanceController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_unit_instance_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, UnitInstance $unitInstance, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, UnitInstance $unitInstances, EntityManagerInterface $entityManager): Response
     {
-        
-        $form = $this->createForm(UnitInstanceType::class, $unitInstance);
+
+        $form = $this->createForm(UnitInstanceType::class, $unitInstances);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
             $this->addFlash('success', 'Unit instance updated successfully.');
-            $this->logService->log('update', $unitInstance->getId(), "Updated unit instance: {$unitInstance->getSerialNumber()}");
+            $this->logService->log('update', $unitInstances->getId(), "Updated unit instance: {$unitInstances->getSerialNumber()}");
 
             return $this->redirectToRoute('app_unit_instance_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        // Fetch weapons and users for the <select> dropdowns in the custom Twig form
         $weapons = $entityManager->getRepository(\App\Entity\Unit::class)->findBy([], ['name' => 'ASC']);
         $users = $entityManager->getRepository(\App\Entity\User::class)->findBy([], ['full_name' => 'ASC']);
 
         return $this->render('UserPage/Admin/forms/unit_instance/edit.html.twig', [
-            'unit_instance' => $unitInstance,
+            'unit_instance' => $unitInstances,
             'weapons' => $weapons,
             'users' => $users,
             'form' => $form->createView(),

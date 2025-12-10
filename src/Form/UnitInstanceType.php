@@ -19,7 +19,6 @@ class UnitInstanceType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Tailwind-style class presets
         $inputClasses = 'mt-1 block w-full rounded-lg border border-gray-300 shadow-sm 
                          focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 
                          sm:text-sm px-3 py-2';
@@ -69,7 +68,7 @@ class UnitInstanceType extends AbstractType
             ])
             ->add('weaponType', EntityType::class, [
                 'class' => Unit::class,
-                'choice_label' => 'name', // or 'id', but 'name' is more user-friendly
+                'choice_label' => 'name', 
                 'placeholder' => 'Select Weapon Type',
                 'label' => 'Weapon Type',
                 'attr' => ['class' => $inputClasses],

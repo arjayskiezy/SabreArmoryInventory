@@ -1,0 +1,96 @@
+{% extends 'UserPage/Admin/index.html.twig' %}
+
+{% block title %}Firearm & Equipment Reports{% endblock %}
+
+{% block admin_content %}
+<div class="flex">
+    <div class="flex-1 flex flex-col bg-gray-50">
+        <main class="flex-1 overflow-y-auto">
+            <section
+                x-data="{
+                    search: '',
+                    filter: '',
+                    anyVisible: true,
+                    checkVisible() {
+                        this.$nextTick(() => {
+                            const rows = Array.from(this.$root.querySelectorAll('tr[data-row]'));
+                            this.anyVisible = rows.some(tr => tr.offsetParent !== null);
+                        });
+                    }
+                }"
+                x-effect="checkVisible()"
+                class="space-y-4"
+            >
+                <!-- Header -->
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div>
+                        <h2 class="text-xl font-semibold">Firearm & Equipment Reports</h2>
+                        <p class="text-sm text-gray-500">A complete list of all firearms and issued equipment reports.</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <input type="text" placeholder="Search user or unit..." x-model="search" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none w-64 text-sm"/>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto bg-white rounded-xl shadow-lg border border-gray-200 max-h-[600px] overflow-y-auto mt-4">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm rounded-lg">
+                        <thead class="bg-gray-100 text-gray-700 uppercase text-xs tracking-wider sticky top-0 z-10">
+                            <tr>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">User</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Unit</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Item Status</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Notes</th>
+                                <th class="px-4 py-2 text-left border-b border-gray-200">Reported At</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="divide-y divide-gray-100">
+                            {% if reports|length > 0 %}
+                                {% for report in reports %}
+                                    <tr
+                                        data-row
+                                        class="hover:bg-gray-50 transition-colors border-b border-gray-200"
+                                        x-data="{
+                                            reportUser: '{{ report.user.getFullName|lower|e('js') }}',
+                                            reportUnit: '{{ report.unit.serialNumber|lower|e('js') }}',
+                                            isVisible: false
+                                        }"
+                                        x-show="reportUser.includes(search.toLowerCase()) || reportUnit.includes(search.toLowerCase())"
+                                    >
+                                        <td class="px-4 py-2 text-gray-900">{{ report.user.getFullName }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ report.unit.serialNumber }}</td>
+
+                                        {# Styled badge for Item Status #}
+                                        {% set status_colors = {
+                                            'URGENT': 'bg-red-100 text-red-700 border-red-300',
+                                            'MAINTENANCE': 'bg-yellow-100 text-yellow-700 border-yellow-300',
+                                            'GOOD': 'bg-green-100 text-green-700 border-green-300'
+                                        } %}
+                                        {% set badge_class = status_colors[report.itemStatus.value] | default(status_colors['GOOD']) %}
+                                        <td class="px-4 py-2">
+                                            <span class="inline-flex items-center gap-2 font-bold px-3 py-1 rounded-full text-xs uppercase tracking-wider border {{ badge_class }}">
+                                                {{ report.itemStatus.value }}
+                                            </span>
+                                        </td>
+
+                                        <td class="px-4 py-2 text-gray-700 truncate max-w-xs">{{ report.notes ?: 'No notes' }}</td>
+                                        <td class="px-4 py-2 text-gray-700">{{ report.createdAt|date('Y-m-d H:i') }}</td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr x-show="anyVisible" x-transition.opacity.duration.300ms>
+                                    <td colspan="5" class="px-4 py-6 text-center text-gray-400">
+                                        No reports found.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+{% endblock %}

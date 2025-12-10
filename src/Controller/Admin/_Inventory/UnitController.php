@@ -13,13 +13,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/unit')]
+#[Route('/admin/unit')]
 final class UnitController extends AbstractController
 {
-    #[Route(name: 'app_unit_index', methods: ['GET'])]
+    #[Route('/index',name: 'app_unit_index', methods: ['GET'])]
     public function index(UnitRepository $unitRepository, StockRepository $stockRepository, Request $request): Response
     {
-        return $this->redirectToRoute('app_inventory', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_inventory');
     }
 
     #[Route('/new', name: 'app_unit_new', methods: ['GET', 'POST'])]
