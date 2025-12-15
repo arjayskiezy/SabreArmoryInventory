@@ -15,9 +15,14 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 final class AuthController extends AbstractController
 {
     #[Route('/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
     {
 
+        // dd(
+        //     $request->getScheme(),
+        //     $request->getHost(),
+        //     $request->headers->get('x-forwarded-proto')
+        // );
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
