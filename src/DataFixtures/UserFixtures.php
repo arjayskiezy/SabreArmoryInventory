@@ -47,11 +47,22 @@ class UserFixtures extends Fixture
 
         // Demo user
         $demo = new User();
-        $demo->setEmail('user@example.com');
+        $demo->setEmail('customer@example.com');
         $demo->setRoles(['ROLE_USER', 'ROLE_CUSTOMER']);
-        $demo->setFullName('Demo User');
+        $demo->setFullName('Customer Kho');
         $demo->setUserRank($ranks[array_rand($ranks)]);
-        $demo->setPassword($this->passwordHasher->hashPassword($demo, 'userpass123'));
+        $demo->setPassword($this->passwordHasher->hashPassword($demo, 'customer'));
+        $demo->setContactNumber($faker->phoneNumber);
+        $demo->setBio($faker->sentence(12));
+        $manager->persist($demo);
+
+        // Staff user
+        $demo = new User();
+        $demo->setEmail('staff@example.com');
+        $demo->setRoles(['ROLE_USER', 'ROLE_STAFF']);
+        $demo->setFullName('Staff Kho');
+        $demo->setUserRank($ranks[array_rand($ranks)]);
+        $demo->setPassword($this->passwordHasher->hashPassword($demo, 'staff'));
         $demo->setContactNumber($faker->phoneNumber);
         $demo->setBio($faker->sentence(12));
         $manager->persist($demo);
@@ -62,7 +73,7 @@ class UserFixtures extends Fixture
         $admin->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
         $admin->setFullName('Administrator');
         $admin->setUserRank($ranks[array_rand($ranks)]);
-        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'adminpass123'));
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin'));
         $admin->setContactNumber($faker->phoneNumber);
         $admin->setBio($faker->sentence(12));
         $manager->persist($admin);
